@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:maersk_com_iib_common_error_v1_ErrorHandler_v1.subflow="maersk/com/iib/common/error/v1/ErrorHandler_v1.subflow" xmlns:maersk_com_iib_common_state_v1_GetState.subflow="maersk/com/iib/common/state/v1/GetState.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility"
+    nsURI="maersk/com/iib/mq/reply/v1/Reply.msgflow" nsPrefix="maersk_com_iib_mq_reply_v1_Reply.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="Reply" bundleName="maersk/com/iib/mq/reply/v1/Reply" pluginId="PA_MQ_Request"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/PA_MQ_Request/icons/full/obj16/Reply.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/PA_MQ_Request/icons/full/obj30/Reply.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="444,292" queueName="SERVICEA.REPLY" connection="CLIENT" destinationQueueManagerName="QMBP01" queueManagerHostname="localhost" listenerPortNumber="1452" channelName="APP01.SVRCONN" securityIdentity="SECENTITY" messageDomainProperty="BLOB">
+        <translation xmi:type="utility:ConstantString" string="ReadMessage"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="912,288" connection="CLIENT" destinationQueueManagerName="QMAP01" queueManagerHostname="localhost" listenerPortNumber="1442" channelName="APP01.SVRCONN" securityIdentity="SECENTITY" destinationMode="list" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="WriteResponse"/>
+      </nodes>
+      <nodes xmi:type="maersk_com_iib_common_error_v1_ErrorHandler_v1.subflow:FCMComposite_1" xmi:id="FCMComposite_1_4" location="544,485">
+        <translation xmi:type="utility:ConstantString" string="ErrorHandler_v"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="859,482" queueName="ERROR.HANDLER">
+        <translation xmi:type="utility:ConstantString" string="ERROR.HANDLER"/>
+      </nodes>
+      <nodes xmi:type="maersk_com_iib_common_state_v1_GetState.subflow:FCMComposite_1" xmi:id="FCMComposite_1_2" location="661,216" queueName="IIB.STATEQ" getWithCorrelID="true" getWithCorrelID.internal_npcompiler="com.ibm.etools.mft.ibmnodes.compilers.BooleanPropertyCompiler">
+        <translation xmi:type="utility:ConstantString" string="GetState"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.Output2" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input1"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>
