@@ -1,0 +1,31 @@
+BROKER SCHEMA maersk.com.iib.common.state.v1
+
+--DECLARE SaveState EXTERNAL BOOLEAN FALSE;
+DECLARE URL EXTERNAL CHARACTER '';
+DECLARE ExpiryTime EXTERNAL INTEGER 10;
+
+CREATE COMPUTE MODULE SaveState_SaveState_To_MQ_or_Use_URL
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE retCode AS INTEGER;
+		DECLARE retValue AS CHARACTER;
+		
+		SET retCode = getVariable("HOME", retValue);
+		
+		SET OutputRoot = InputRoot;
+		--IF (SaveState = FALSE) THEN
+		--	RETURN TRUE;
+		--END IF;
+				
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.origMsgId = refIn.MsgId;
+		SET Environment.variables.origCorrelId = refIn.CorrelId;
+		
+		SET Environment.variables.ReplyQmgr = refIn.ReplyToQMgr;
+		SET Environment.variables.ReplyToQueue = refIn.ReplyToQ;
+		
+		RETURN TRUE;
+		
+	END;
+END MODULE;

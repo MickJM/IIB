@@ -1,0 +1,4 @@
+CREATE FUNCTION getVariable(IN P1 INTEGER)
+	RETURNS INTEGER
+	LANGUAGE JAVA
+	EXTERNAL NAME "maersk.com.java.helpers.EnvVariable.get";

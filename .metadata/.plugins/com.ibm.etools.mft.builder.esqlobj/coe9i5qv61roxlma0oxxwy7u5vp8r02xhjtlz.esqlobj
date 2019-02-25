@@ -1,0 +1,10 @@
+CREATE COMPUTE MODULE sfSaveStateMessage_v1_Copy_MQMD_CorrelID_to_Environment
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET Environment.StateMQMD.CorrelId = InputLocalEnvironment.WrittenDestination.MQ.DestinationData.correlId;
+		RETURN TRUE;
+
+	END;
+	
+END MODULE;

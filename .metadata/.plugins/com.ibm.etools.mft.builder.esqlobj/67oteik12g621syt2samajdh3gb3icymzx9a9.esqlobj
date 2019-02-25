@@ -1,0 +1,204 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		CALL AddEnvelope();
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE AddEnvelope() BEGIN
+
+		-- If there is no MQMD, then create it ...
+		IF NOT EXISTS(InputRoot.MQMD[]) THEN
+			CALL ConstructMQMD();
+		ELSE
+			SET OutputRoot.MQMD = InputRoot.MQMD;
+			SET OutputRoot.MQRFH2 = InputRoot.MQRFH2;
+		END IF;
+
+		DECLARE sRoot, sState, sField CHARACTER '';
+		SET sRoot = FIELDNAME(InputRoot.XMLNSC.*[>]);
+		SET sField = sRoot;
+		
+		IF (IncludeNameSpace) THEN
+			SET OutputRoot.XMLNSC.esbenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:esbenv = esbenv;
+			SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.(XMLNSC.NamespaceDecl)xmlns:esbhdr = esbhdr;
+			SET OutputRoot.XMLNSC.esbenv:Envelope.esberr:Error.(XMLNSC.NamespaceDecl)xmlns:esberr = esberr;
+		END IF;
+
+		
+		-- If anything alredy in the Environment, then use it ...
+		IF EXISTS(Environment.Header[]) THEN
+			DECLARE I INTEGER 1;
+			DECLARE J INTEGER;
+			DECLARE ResponseRef REFERENCE TO OutputRoot;
+
+			SET J = CARDINALITY(Environment.Header.*[]);
+
+			WHILE I <= J DO
+				IF CONTAINS(FIELDVALUE(Environment.Header.*[I]), 'http://') THEN
+					--Do Nothing
+				ELSE
+					IF CARDINALITY(Environment.Header.*[I].*[]) > 0 THEN
+						
+						CREATE LASTCHILD OF OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header AS ResponseRef NAMESPACE esbhdr 
+							NAME FIELDNAME(Environment.Header.*[I]);
+						SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+						SET ResponseRef = Environment.Header.*[I];
+					ELSE
+						CREATE LASTCHILD OF OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header AS ResponseRef NAMESPACE esbhdr 
+							NAME FIELDNAME(Environment.Header.*[I]) 
+								VALUE FIELDVALUE(Environment.Header.*[I]);
+						SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+					END IF;
+				END IF;
+				SET I = I + 1;
+			END WHILE;
+			
+		-- if anything in the LocalEnvironment, then use that instead ....
+		ELSEIF EXISTS(InputLocalEnvironment.SOAP.Envelope.InRequest[]) THEN
+			SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header = 
+					InputLocalEnvironment.SOAP.Envelope.InRequest.*[<].SOAP.Header.esbhdr:Header;		
+      		SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:extensionList.esbhdr:extension.esbhdr:name  = 
+      				'SOAPReplyIdentifier';
+      		SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:extensionList.esbhdr:extension.esbhdr:value = 
+      				CAST(InputLocalEnvironment.Destination.SOAP.Reply.ReplyIdentifier AS BLOB);
+
+		ELSEIF EXISTS(InputLocalEnvironment.Destination.HTTP[]) THEN
+		--	SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header = 'HTTPHeader';
+		    IF (IncludeNameSpace) THEN		
+	      		SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:extensionList.esbhdr:extension.esbhdr:name = 'HTTPReplyIdentifier';
+	      		SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:extensionList.esbhdr:extension.esbhdr:value = 
+	      				CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB);
+		    ELSE
+		    	SET OutputRoot.XMLNSC.{sField}.Header.operationName = MessageFlowLabel;
+		    	SET OutputRoot.XMLNSC.{sField}.Header.timestamp = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd HH:mm:ss');
+				SET OutputRoot.XMLNSC.{sField}.Header.sourceSystem = 'ESB';
+				SET OutputRoot.XMLNSC.{sField}.Header.userId = 'IIB';
+		    	
+	      		SET OutputRoot.XMLNSC.{sField}.Header.extensionList.extension.name = 'HTTPReplyIdentifier';
+	      		SET OutputRoot.XMLNSC.{sField}.Header.extensionList.extension.value = 
+	      				CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB);
+			    	
+		    END IF;
+		    	
+		ELSEIF EXISTS(Environment.RequestState[]) THEN
+			DECLARE I INTEGER 1;
+			DECLARE J, J1 INTEGER;
+			DECLARE ResponseRef REFERENCE TO OutputRoot;
+
+			IF (IncludeNameSpace) THEN
+				SET J = CARDINALITY(Environment.RequestState.XMLNSC.*:Envelope.*:Header.*[]);				
+				WHILE I <= J DO
+					IF CONTAINS(FIELDVALUE(Environment.RequestState.XMLNSC.*:Envelope.*:Header.*[I]), 'http://') THEN
+						--Do Nothing
+					ELSE
+						IF CARDINALITY(Environment.RequestState.XMLNSC.*:Envelope.*:Header.*[I].*[]) > 0 THEN
+							
+							CREATE LASTCHILD OF OutputRoot.XMLNSC.*:Envelope.*:Header AS ResponseRef NAMESPACE esbhdr 
+							    NAME FIELDNAME(Environment.RequestState.XMLNSC.*:Envelope.*:Header.*[I]);
+							SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+							SET ResponseRef = Environment.RequestState.XMLNSC.*:Envelope.*:Header.*[I];
+						ELSE
+							CREATE LASTCHILD OF OutputRoot.XMLNSC.*:Envelope.*:Header AS ResponseRef NAMESPACE esbhdr 
+							    NAME FIELDNAME(Environment.RequestState.XMLNSC.*:Envelope.*:Header.*[I]) 
+							        VALUE FIELDVALUE(Environment.RequestState.XMLNSC.*:Envelope.*:Header.*[I]);
+							SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+						END IF;
+
+					END IF;
+					SET I = I + 1;
+				END WHILE;
+			ELSE
+				SET sState = FIELDNAME(Environment.RequestState.XMLNSC.[>]);
+				IF (sRoot = 'Error') THEN
+					SET sRoot = sState || 'Response';
+				END IF;
+				SET J = CARDINALITY(Environment.RequestState.XMLNSC.{sState}.Header.*[]);								
+				WHILE I <= J DO
+					IF CONTAINS(FIELDVALUE(Environment.RequestState.XMLNSC.{sState}.Header.*[I]), 'http://') THEN
+						--Do Nothing
+					ELSE
+						IF CARDINALITY(Environment.RequestState.XMLNSC.{sState}.Header.*[I].*[]) > 0 THEN
+							
+							CREATE LASTCHILD OF OutputRoot.XMLNSC.{sRoot}.Header AS ResponseRef  
+							    NAME FIELDNAME(Environment.RequestState.XMLNSC.{sState}.Header.*[I]);
+		--					SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+							SET ResponseRef = Environment.RequestState.XMLNSC.{sState}.Header.*[I];
+						ELSE
+							CREATE LASTCHILD OF OutputRoot.XMLNSC.{sRoot}.Header AS ResponseRef  
+							    NAME FIELDNAME(Environment.RequestState.XMLNSC.{sState}.Header.*[I]) 
+							        VALUE FIELDVALUE(Environment.RequestState.XMLNSC.{sState}.Header.*[I]);
+		--					SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+						END IF;
+					END IF;
+					SET I = I + 1;
+				END WHILE;
+			END IF;							
+		ELSE 
+		-- we dont have anything, so thorw an error
+			THROW USER EXCEPTION VALUES('ESB Header Not Found'); 
+		END IF;
+		
+		
+		CASE (sField)
+			
+			WHEN 'Error' THEN 
+				
+				IF (IncludeNameSpace) THEN
+					SET OutputRoot.XMLNSC.esbenv:Envelope.esberr:Error 	= InputRoot.XMLNSC.esberr:Error;
+				ELSE
+					SET OutputRoot.XMLNSC.{sRoot}.Error = InputRoot.XMLNSC.Error;
+				END IF;					
+			ELSE 	
+				IF (IncludeNameSpace) THEN
+					SET OutputRoot.XMLNSC.esbenv:Envelope.esbenv:Body = InputRoot.XMLNSC;
+				ELSE
+					SET OutputRoot.XMLNSC.{sRoot}.Body = InputRoot.XMLNSC.{sRoot};					
+				END IF;
+				
+			END CASE;			 
+		
+		SET Environment.HTTPInputHeader = InputRoot.HTTPInputHeader;	
+	END; 	
+
+	CREATE PROCEDURE ConstructMQMD() BEGIN
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'MQMD';
+
+--		IF NOT EXISTS(Environment.MQMD[]) THEN			
+--			SET OutputRoot.MQMD.MsgId           				= CAST(InputLocalEnvironment.Destination.SOAP.Reply.ReplyIdentifier AS BLOB);
+--		END IF;	
+		
+		SET OutputRoot.MQMD.Version = MQMD_CURRENT_VERSION;
+		SET OutputRoot.MQMD.Format = MQFMT_STRING;
+		SET OutputRoot.MQMD.Expiry = 600;
+			
+		IF EXISTS(Environment.MQMD[]) THEN			
+			SET OutputRoot.MQMD									= Environment.MQMD;						
+		ELSE
+			IF EXISTS(Environment.RequestState.MQMD[]) THEN
+				SET OutputRoot.MQMD = Environment.RequestState.MQMD;
+			ELSE	
+				IF 	EXISTS(InputLocalEnvironment.SOAP.Envelope.InRequest.*[<].SOAP.Header.esbhdr:Header.esbhdr:messageId[]) THEN 
+					SET OutputRoot.MQMD.CorrelId					= CAST(InputLocalEnvironment.SOAP.Envelope.InRequest.*[<].SOAP.Header.esbhdr:Header.esbhdr:messageId AS BLOB);
+				ELSE 
+					SET OutputRoot.MQMD.CorrelId					= CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS BLOB);
+				END IF;
+			END IF;
+		END IF;				
+
+		IF EXISTS(Environment.RequestState.MQRFH2[]) THEN
+			SET OutputRoot.MQRFH2.*[] = Environment.RequestState.MQRFH2.*[];
+		ELSE		
+			CREATE NEXTSIBLING OF OutputRoot.MQMD DOMAIN 'MQRFH2';
+			CREATE LASTCHILD OF OutputRoot.MQRFH2 NAME 'usr';
+			DECLARE refUsr REFERENCE TO OutputRoot.MQRFH2.usr;
+			--	
+			IF EXISTS(InputLocalEnvironment.Destination.HTTP[]) THEN
+				SET refUsr.UserIdentifier = CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB); 
+			END IF;
+		END IF;					
+		
+		
+		
+		
+	END;  
+	

@@ -1,0 +1,5 @@
+package maersk.com.java.helpers;
+
+public class EnvVariable {
+
+}

@@ -1,0 +1,27 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		SET OutputRoot = InputRoot;
+		IF (SaveState = FALSE) THEN
+			RETURN TRUE;
+		END IF;
+		
+		DECLARE msgId BLOB;		
+		DECLARE textMsgId CHARACTER '';		
+		DECLARE textCorrelId CHARACTER '';
+		DECLARE suffix CHARACTER '';
+
+		SET suffix = UUIDASCHAR;		
+		SET textMsgId = 'AMQ ' || BrokerName || SUBSTRING(suffix FROM 1 FOR 11);
+		SET msgId = CAST(textMsgId AS BLOB CCSID InputRoot.Properties.CodedCharSetId);
+		
+		
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.ReplyQmgr = refIn.ReplyToQMgr;
+		SET Environment.variables.ReplyToQueue = refIn.ReplyToQ;
+		
+		PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+		
+		RETURN FALSE;
+		
+	END;

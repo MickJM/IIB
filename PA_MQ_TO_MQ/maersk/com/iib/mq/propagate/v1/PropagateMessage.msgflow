@@ -6,10 +6,10 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/PA_MQ_TO_MQ/icons/full/obj16/PropagateMessage.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/PA_MQ_TO_MQ/icons/full/obj30/PropagateMessage.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="334,292" queueName="SERVICEB.REQ" connection="CCDT" destinationQueueManagerName="*APPA01" queueManagerHostname="localhost" listenerPortNumber="1442" channelName="APP01.SVRCONN" securityIdentity="SECENTITY" messageDomainProperty="BLOB">
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="334,292" queueName="SERVICEB.REQ" connection="CCDT" destinationQueueManagerName="*APPA01" messageDomainProperty="BLOB">
         <translation xmi:type="utility:ConstantString" string="ReadMessage"/>
       </nodes>
-      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="794,294" queueName="SERVICEB.ALIAS" connection="CCDT" destinationQueueManagerName="*APPB01" queueManagerHostname="localhost" listenerPortNumber="1452" channelName="APP01.SVRCONN" securityIdentity="SECENTITY">
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="723,290" queueName="SERVICEB.ALIAS" connection="CCDT" destinationQueueManagerName="*APPB01" queueManagerHostname="localhost" listenerPortNumber="1452" channelName="APP01.SVRCONN" securityIdentity="SECENTITY">
         <translation xmi:type="utility:ConstantString" string="WriteMessage"/>
       </nodes>
       <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="750,473" queueName="ERROR.HANDLER">

@@ -1,0 +1,24 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		SET OutputRoot = InputRoot;
+		IF (SaveState = FALSE) THEN
+			RETURN TRUE;
+		END IF;
+		
+		DECLARE textMsgId CHARACTER '';
+		SET textMsgId = 'AMQ TSTQPD01';
+		
+		DECLARE msgId BLOB;
+		SET msgId = CAST(textMsgId AS BLOB);
+		
+		
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.ReplyQmgr = refIn.ReplyToQMgr;
+		SET Environment.variables.ReplyToQueue = refIn.ReplyToQ;
+		
+		PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+		
+		RETURN FALSE;
+		
+	END;

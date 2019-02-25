@@ -1,0 +1,32 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		IF (Message = 'REQUEST') THEN
+			SET Environment.Variables.RequestType = MQMT_REQUEST;
+		END IF;
+		IF (Message = 'DATAGRAM') THEN
+			SET Environment.Variables.RequestType = MQMT_DATAGRAM;
+		END IF;
+		
+		--IF (Environment.Variables.UpdateState = 'Y') THEN
+		/*
+			SET OutputRoot.Properties = Environment.RequestState.Properties;
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'MQMD' NAME 'MQMD';
+			SET OutputRoot.MQMD = Environment.RequestState.MQMD;
+			
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'MQRFH2' NAME 'MQRFH2';		
+			SET OutputRoot.MQRFH2.*[] = Environment.RequestState.MQRFH2.*[];
+			
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC' NAME 'XMLNSC';
+			SET OutputRoot.XMLNSC.*[] = Environment.RequestState.XMLNSC.*[];
+		*/	
+		--	SET OutputRoot.*[] = Environment.RequestState.*[];
+		--ELSE
+			SET OutputRoot = InputRoot;
+		--END IF;
+		
+       	SET OutputRoot.MQMD.Expiry = setExpiry;
+		RETURN TRUE;
+
+
+	END;

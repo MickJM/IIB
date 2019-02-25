@@ -19,8 +19,11 @@ CREATE COMPUTE MODULE SaveState_SetHeaderForRest
 		SET OutputRoot.MQMD.ReplyToQ = ReplyToQueue;
 		SET OutputRoot.MQMD.ReplyToQMgr = ReplyToQueueManager;
 			
-		SET OutputRoot.MQMD.MsgId = Environment.StateMQMD.CorrelId;
+	--	SET OutputRoot.MQMD.MsgId = Environment.StateMQMD.CorrelId;
+
+		SET OutputRoot.MQMD.MsgId = InputRoot.MQMD.MsgId;
 		SET OutputRoot.MQMD.CorrelId = InputRoot.MQMD.MsgId;
+	--	SET OutputRoot.MQMD.CorrelId = InputRoot.MQMD.CorrelId;
 
 		SET OutputRoot.BLOB = InputRoot.BLOB;		
 			

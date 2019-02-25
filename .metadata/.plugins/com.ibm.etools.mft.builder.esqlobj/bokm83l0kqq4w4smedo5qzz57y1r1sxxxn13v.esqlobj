@@ -1,0 +1,30 @@
+CREATE COMPUTE MODULE SaveState_SaveState_To_MQ_or_Use_URL
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		SET OutputRoot = InputRoot;
+		IF (SaveState = FALSE) THEN
+			RETURN TRUE;
+		END IF;
+		
+		DECLARE textMsgId CHARACTER '';
+		SET textMsgId = 'AMQ TSTQPD01';
+		
+		
+		DECLARE msgId BLOB;
+		
+		DECLARE StaticValueBlob BLOB CAST('StaticValue' AS BLOB CCSID InputRoot.Properties.CodedCharSetId);  
+		
+		SET msgId = CAST(textMsgId AS BLOB);
+		
+		
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.ReplyQmgr = refIn.ReplyToQMgr;
+		SET Environment.variables.ReplyToQueue = refIn.ReplyToQ;
+		
+		PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+		
+		RETURN FALSE;
+		
+	END;
+END MODULE;

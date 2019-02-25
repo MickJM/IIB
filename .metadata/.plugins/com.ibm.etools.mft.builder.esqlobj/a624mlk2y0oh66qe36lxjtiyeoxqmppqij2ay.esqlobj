@@ -1,0 +1,18 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		SET OutputRoot = InputRoot;
+		--IF (SaveState = FALSE) THEN
+		--	RETURN TRUE;
+		--END IF;
+				
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.origMsgId = refIn.MsgId;
+		SET Environment.variables.origCorrelId = refIn.CorrelId;
+		
+		SET Environment.variables.ReplyQmgr = refIn.ReplyToQMgr;
+		SET Environment.variables.ReplyToQueue = refIn.ReplyToQ;
+		
+		RETURN TRUE;
+		
+	END;

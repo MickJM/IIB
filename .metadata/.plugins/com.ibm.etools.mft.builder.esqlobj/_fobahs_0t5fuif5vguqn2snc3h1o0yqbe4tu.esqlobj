@@ -1,0 +1,33 @@
+CREATE COMPUTE MODULE SaveState_Transform_MQMD
+
+	DECLARE setExpiry EXTERNAL INTEGER 1800;	
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		IF (MESSAGE = 'REQUEST') THEN
+			SET Environment.Variables.RequestType = MQMT_REQUEST;
+		END IF;
+		
+		--IF (Environment.Variables.UpdateState = 'Y') THEN
+		/*
+			SET OutputRoot.Properties = Environment.RequestState.Properties;
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'MQMD' NAME 'MQMD';
+			SET OutputRoot.MQMD = Environment.RequestState.MQMD;
+			
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'MQRFH2' NAME 'MQRFH2';		
+			SET OutputRoot.MQRFH2.*[] = Environment.RequestState.MQRFH2.*[];
+			
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC' NAME 'XMLNSC';
+			SET OutputRoot.XMLNSC.*[] = Environment.RequestState.XMLNSC.*[];
+		*/	
+		--	SET OutputRoot.*[] = Environment.RequestState.*[];
+		--ELSE
+			SET OutputRoot = InputRoot;
+		--END IF;
+		
+       	SET OutputRoot.MQMD.Expiry = setExpiry;
+		RETURN TRUE;
+
+
+	END;
+END MODULE;

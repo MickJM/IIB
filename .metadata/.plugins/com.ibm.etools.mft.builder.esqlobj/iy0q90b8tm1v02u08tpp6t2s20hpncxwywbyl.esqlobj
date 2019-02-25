@@ -1,0 +1,24 @@
+CREATE COMPUTE MODULE GetState_Parse_Response
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		DECLARE refIn REFERENCE TO InputRoot.JSON.Data;
+		DECLARE data CHARACTER '';
+		
+		IF LASTMOVE(refIn) THEN 
+			SET data = refIn.data;
+			CREATE LASTCHILD OF Environment.variables DOMAIN 'JSON' 
+					PARSE(data CCSID InputRoot.Properties.CodedCharSetId 
+								ENCODING 0);
+		END IF;
+		
+		SET data = 'y';
+		
+		RETURN TRUE;
+
+
+	END;
+END MODULE;

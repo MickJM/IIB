@@ -1,0 +1,28 @@
+CREATE COMPUTE MODULE SaveState_SetHeader
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'MQMD';
+
+		SET OutputRoot.MQMD.Format = MQFMT_STRING;		
+		SET OutputRoot.MQMD.Version = MQMD_CURRENT_VERSION;
+		SET OutputRoot.MQMD.Expiry = 600;
+
+	--	IF (Message = 'REQUEST') THEN
+
+		--IF (InputRoot.MQMD.MsgType = MQMT_REQUEST) THEN
+		SET OutputRoot.MQMD.MsgType = MQMT_REQUEST;
+		SET OutputRoot.MQMD.ReplyToQ = InputRoot.MQMD.ReplyToQ;
+		SET OutputRoot.MQMD.ReplyToQMgr = InputRoot.MQMD.ReplyToQMgr;
+			
+		SET OutputRoot.MQMD.CorrelId = Environment.StateMQMD.CorrelId;
+		SET OutputRoot.MQMD.MsgId = InputRoot.MQMD.MsgId;
+
+		SET OutputRoot.BLOB = InputRoot.BLOB;		
+			
+		--END IF;
+		RETURN TRUE;
+
+	END;
+END MODULE;

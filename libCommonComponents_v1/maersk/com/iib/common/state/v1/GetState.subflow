@@ -50,43 +50,40 @@
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="599,262" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_RestoreState.Main" computeMode="destinationAndMessage">
         <translation xmi:type="utility:ConstantString" string="RestoreState"/>
       </nodes>
-      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input1" location="124,530">
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input1" location="98,635">
         <translation xmi:type="utility:TranslatableString" key="InTerminal.APIInput" bundleName="maersk/com/iib/common/state/v1/GetState" pluginId="libCommonComponents_v1"/>
       </nodes>
-      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="476,537">
+      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="480,637">
         <translation xmi:type="utility:ConstantString" string="Flow Order"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="246,535" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_Get_State_from_DB.Main" computeMode="destinationAndMessage">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="250,635" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_Get_State_from_DB.Main" computeMode="destinationAndMessage">
         <translation xmi:type="utility:ConstantString" string="Get State from DB"/>
       </nodes>
-      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="367,657" messageNumber="3505" messageText="Retrieval of a state message has been selected, but not set">
-        <translation xmi:type="utility:ConstantString" string="API Selection not set"/>
-      </nodes>
-      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="665,537" definitionType="swagger_20" definitionFile="swagger.yaml" operationName="generate" timeoutForServer="5" outputDataLocation="$Environment/State/key" acceptCompressedResponses="true">
+      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="669,637" definitionType="swagger_20" definitionFile="swagger.yaml" operationName="generate" timeoutForServer="5" outputDataLocation="$Environment/State/key" acceptCompressedResponses="true">
         <translation xmi:type="utility:ConstantString" string="generate"/>
       </nodes>
-      <nodes xmi:type="ComIbmPassthru.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="1332,546">
+      <nodes xmi:type="ComIbmPassthru.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="1409,638">
         <translation xmi:type="utility:ConstantString" string="Pass through"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="822,538" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_Setup_API_Call.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="824,636" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_Setup_API_Call.Main">
         <translation xmi:type="utility:ConstantString" string="Setup API Call"/>
       </nodes>
-      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_12" location="1040,545" definitionType="swagger_20" definitionFile="swagger.yaml" operationName="getState" outputDataLocation="$Environment/State/Response" acceptCompressedResponses="true">
+      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_12" location="1051,636" definitionType="swagger_20" definitionFile="swagger.yaml" operationName="getState" outputDataLocation="$Environment/State/Response" acceptCompressedResponses="true">
         <translation xmi:type="utility:ConstantString" string="getState"/>
       </nodes>
-      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_14" location="784,727" messageNumber="3506" messageText="Error retrieving correlationId">
+      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_14" location="835,830" messageNumber="3506" messageText="Error retrieving correlationId">
         <translation xmi:type="utility:ConstantString" string="Error getting correl Id"/>
       </nodes>
-      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_15" location="1160,722" messageNumber="3507" messageText="Error retrieving state message from database">
+      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_15" location="1204,829" messageNumber="3507" messageText="Error retrieving state message from database">
         <translation xmi:type="utility:ConstantString" string="Error getting state"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_16" location="1165,546" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_Parse_Response.Main">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_16" location="1192,637" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_Parse_Response.Main">
         <translation xmi:type="utility:ConstantString" string="Parse Response"/>
       </nodes>
-      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="602,651" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_CreateMQMD.Main" computeMode="destinationAndMessage">
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="562,760" computeExpression="esql://routine/maersk.com.iib.common.state.v1#GetState_CreateMQMD.Main" computeMode="destinationAndMessage">
         <translation xmi:type="utility:ConstantString" string="CreateMQMD"/>
       </nodes>
-      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output2" location="668,771">
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output2" location="672,871">
         <translation xmi:type="utility:TranslatableString" key="OutTerminal.DBOutput" bundleName="maersk/com/iib/common/state/v1/GetState" pluginId="libCommonComponents_v1"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
@@ -96,8 +93,6 @@
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_6" sourceNode="InTerminal.Input1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
-      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
-      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out1" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.first" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_14" targetNode="FCMComposite_1_11" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_16" targetNode="FCMComposite_1_12" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
@@ -109,6 +104,7 @@
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_24" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_16" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_25" targetNode="FCMComposite_1_17" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.second" targetTerminalName="InTerminal.in"/>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_27" targetNode="OutTerminal.Output2" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
     </composition>
     <propertyOrganizer>
       <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.transactionMode">

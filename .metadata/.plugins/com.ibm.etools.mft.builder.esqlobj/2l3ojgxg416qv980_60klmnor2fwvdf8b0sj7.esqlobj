@@ -1,0 +1,25 @@
+CREATE COMPUTE MODULE GetState_Get_State_from_DB
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		IF (SaveState = FALSE) THEN
+			RETURN TRUE;
+		END IF;
+				
+		CREATE LASTCHILD OF Environment.variables DOMAIN 'JSON';
+		DECLARE refOrig REFERENCE TO Environment.variables.JSON;
+		SET refOrig.Original.[>] = InputRoot.JSON.[>];
+		
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.MsgId = refIn.MsgId;
+		SET Environment.variables.CorrelId = refIn.CorrelId;
+		
+		PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+		
+		RETURN FALSE;
+
+
+
+	END;
+END MODULE;

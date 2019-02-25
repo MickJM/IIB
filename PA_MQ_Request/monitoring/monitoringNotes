@@ -1,0 +1,12 @@
+$SYS/Broker/<Broker>/Monitoring/<EG>/<flowName>
+
+$SYS/Broker/+/Monitoring/egMQTOMQ/#
+
+mqsireportflowmonitoring TSTIPD01 -e egMQTOMQ -k PA_MQ_Request -j
+
+mqsireportflowmonitoring TSTIPD01 -e egMQTOMQ -k PA_MQ_Request -n -f maersk.com.iib.mq.request.v1.Request
+
+mqsichangeflowmonitoring TSTIPD01 -e egMQTOMQ -k PA_MQ_Request -f maersk.com.iib.mq.request.v1.Request -c active
+mqsichangeflowmonitoring TSTIPD01 -e egMQTOMQ -k PA_MQ_Request -f maersk.com.iib.mq.reply.v1.Reply -c active
+
+

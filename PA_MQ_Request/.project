@@ -4,6 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>libCommonComponents_v1</project>
+		<project>libCommonComponents_v2</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

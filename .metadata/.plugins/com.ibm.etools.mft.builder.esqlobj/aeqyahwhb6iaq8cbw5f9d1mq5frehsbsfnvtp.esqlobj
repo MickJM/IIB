@@ -1,0 +1,8 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET Environment.StateMQMD.CorrelId = InputLocalEnvironment.WrittenDestination.MQ.DestinationData.correlId;
+		RETURN TRUE;
+
+
+	END;

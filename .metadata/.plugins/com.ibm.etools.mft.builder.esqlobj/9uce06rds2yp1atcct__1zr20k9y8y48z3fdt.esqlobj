@@ -1,0 +1,13 @@
+CREATE COMPUTE MODULE GetState_RestoreState
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = 'SERVICEA.REPLY';
+_________________
+		--SET OutputRoot.MQMD = Environment.RequestState.MQMD;
+		--SET OutputRoot.MQMD.Expiry = MQEI_UNLIMITED;
+		RETURN TRUE;
+
+	END;
+END MODULE;

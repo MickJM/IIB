@@ -1,0 +1,20 @@
+CREATE COMPUTE MODULE GetState_Get_State_from_DB
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+				
+		CREATE LASTCHILD OF Environment.variables DOMAIN 'BLOB';
+		DECLARE refOrig REFERENCE TO Environment.variables.BLOB;
+		SET refOrig.Original = InputRoot.BLOB.BLOB;
+		
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.MsgId = refIn.MsgId;
+		SET Environment.variables.CorrelId = refIn.CorrelId;
+		
+		RETURN TRUE;
+
+
+
+	END;
+END MODULE;

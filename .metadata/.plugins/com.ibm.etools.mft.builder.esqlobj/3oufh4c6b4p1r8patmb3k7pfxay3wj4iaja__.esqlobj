@@ -1,0 +1,9 @@
+CREATE COMPUTE MODULE ErrorHandler_v1_ExtractErrors
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL ExceptionHandling();
+		RETURN TRUE;
+		
+	END;
+	
+	CREATE PROCEDURE ExceptionHandling()

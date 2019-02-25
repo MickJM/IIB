@@ -1,0 +1,71 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+
+	BEGIN
+		CALL ExtractEnvelope();
+		RETURN FALSE;
+	END;
+	
+	
+	CREATE PROCEDURE ExtractEnvelope() 
+	BEGIN
+
+	--	SET OutputRoot.XMLNSC = InputRoot.XMLNSC;
+		DECLARE parser CHARACTER '';
+		SET parser = FIELDNAME(InputRoot.[<]);
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		IF EXISTS(InputRoot.MQMD[]) THEN
+			SET OutputRoot.MQMD = InputRoot.MQMD;	
+			SET Environment.MQMD = InputRoot.MQMD;
+			IF EXISTS(InputRoot.MQRFH2[]) THEN	
+				SET OutputRoot.MQRFH2 = InputRoot.MQRFH2;
+				SET Environment.MQRFH2 = InputRoot.MQRFH2;
+			END IF;						
+		END IF;		
+		
+		
+		DECLARE sField CHARACTER '';
+		SET sField = FIELDNAME(InputRoot.XMLNSC.[>]);
+		
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		DECLARE ResponseRef REFERENCE TO Environment;
+
+		
+		SET J = CARDINALITY(InputRoot.XMLNSC.{sField}.Header.*[]);	
+		WHILE I <= J DO
+			IF CONTAINS(FIELDVALUE(InputRoot.XMLNSC.{sField}.Header.*[I]), 'http://') THEN
+				--Do Nothing
+			ELSE
+				IF CARDINALITY(InputRoot.XMLNSC.{sField}.Header.*[I].*[]) > 0 THEN
+					
+					CREATE LASTCHILD OF Environment.Header AS ResponseRef  
+						NAME FIELDNAME(InputRoot.XMLNSC.{sField}.Header.*[I]);
+		--			SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+					SET ResponseRef = InputRoot.XMLNSC.{sField}.Header.*[I];
+				ELSE
+					CREATE LASTCHILD OF Environment.Header AS ResponseRef  
+						NAME FIELDNAME(InputRoot.XMLNSC.{sField}.Header.*[I]) 
+							VALUE FIELDVALUE(InputRoot.XMLNSC.{sField}.Header.*[I]);
+		--			SET ResponseRef.(XMLNSC.Attribute)xmlns = esbhdr;
+				END IF;
+			END IF;
+			SET I = I + 1;
+		END WHILE;
+			
+		CASE FIELDNAME(InputRoot.XMLNSC.{sField}.*[<])
+			WHEN 'Body' THEN 
+				SET OutputRoot.XMLNSC.{sField} = InputRoot.XMLNSC.{sField}.Body;
+				PROPAGATE;
+			WHEN 'Error' THEN 
+				SET OutputRoot.XMLNSC.Error = InputRoot.XMLNSC.Envelope.Error;
+				PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+			ELSE 	
+				THROW USER EXCEPTION VALUES('Invalid (no namespace) ESB Envelope Structure'); 
+		END CASE;			
+			
+		
+	END;
+
+

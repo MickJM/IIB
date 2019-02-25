@@ -1,0 +1,12 @@
+CREATE COMPUTE MODULE SaveState_TransformMQMD
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		
+       	SET OutputRoot.MQMD.Expiry = 600;
+		RETURN TRUE;
+
+
+	END;
+END MODULE;

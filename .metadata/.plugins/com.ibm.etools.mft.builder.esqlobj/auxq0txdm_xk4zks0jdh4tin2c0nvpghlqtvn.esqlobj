@@ -1,0 +1,8 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		IF (SaveState = FALSE) THEN
+			RETURN TRUE;
+		END IF;
+		
+	END;

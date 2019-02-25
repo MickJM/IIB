@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="InMemoryPolicyBeforeSave">
+		<item value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;&#x0A;&lt;policy type=&quot;MQEndpoint&quot;&gt;&#x0A;    &lt;policyProperties&gt;&#x0A;        &lt;mqConnectionDetailsPolicy&gt;&#x0A;            &lt;connection&gt;CCDT&lt;/connection&gt;&#x0A;            &lt;destinationQueueManagerName&gt;*APPA01&lt;/destinationQueueManagerName&gt;&#x0A;            &lt;queueManagerHostname&gt;localhost&lt;/queueManagerHostname&gt;&#x0A;            &lt;listenerPortNumber&gt;1443&lt;/listenerPortNumber&gt;&#x0A;            &lt;channelName&gt;APP01.SVRCONN&lt;/channelName&gt;&#x0A;            &lt;securityIdentity&gt;SECENTITY&lt;/securityIdentity&gt;&#x0A;            &lt;useSSL&gt;false&lt;/useSSL&gt;&#x0A;        &lt;/mqConnectionDetailsPolicy&gt;&#x0A;    &lt;/policyProperties&gt;&#x0A;&lt;/policy&gt;&#x0A;" key="InMemoryPolicyBeforeSave"/>
+	</section>
+</section>

@@ -1,0 +1,25 @@
+CREATE COMPUTE MODULE EA_SERVICEA_DIST_SET_DIST_LIST
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName 
+			= 'TSTQPD01';
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueManagerName 
+			= 'SERVICEA.DISTA';
+		
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[2].queueName 
+			= 'TSTQPD01';
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[2].queueManagerName 
+			= 'SERVICEA.DISTB';
+
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[3].queueName 
+			= 'TSTQPD01';
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[3].queueManagerName 
+			= 'SERVICEA.DISTC';
+
+		RETURN TRUE;
+
+	END;
+END MODULE;

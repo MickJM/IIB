@@ -1,0 +1,368 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		--DECLARE StaticValueBlob BLOB CAST('StaticValue' AS BLOB CCSID InputRoot.Properties.CodedCharSetId);  
+
+		CALL ExceptionListHandler();
+		RETURN TRUE;
+	
+	END;
+
+    	
+	CREATE PROCEDURE ExceptionListHandler()
+	BEGIN
+		
+		DECLARE bAddMQMD BOOLEAN TRUE;
+		
+		SET OutputRoot.Properties = InputRoot.Properties;
+		DECLARE refMQMD REFERENCE TO InputRoot.MQMD;
+		IF LASTMOVE(refMQMD) THEN
+			SET OutputRoot.MQMD = InputRoot.MQMD;
+			SET OutputRoot.MQMD.Expiry = 600;
+			SET OutputRoot.MQRFH2.*[] = InputRoot.MQRFH2.*[];
+			
+		--	CREATE NEXTSIBLING OF OutputRoot.MQMD DOMAIN 'MQRFH2';
+		--	CREATE LASTCHILD OF OutputRoot.MQRFH2 NAME 'usr';
+		--	DECLARE refUsr REFERENCE TO OutputRoot.MQRFH2.usr;
+		
+		--	DECLARE refEnv REFERENCE TO Environment.LoggerSubflow;
+		--	IF LASTMOVE(refEnv) THEN
+		--		MOVE refEnv TO Environment.LoggerSubflow.OverRides;
+		--	END IF;
+		
+		--	declare r1 reference to InputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:extensionList.esbhdr:extension;
+		--	declare t character '';
+			
+		--	if lastmove(r1) then
+		--		set t='Yes';
+		--	end if;
+			
+		--	SET refUsr.UserIdentifier = InputRoot.XMLNSC.*:Envelope.*:Header.*:extensionList.*:extension.*:value;
+			--COALESCE(Environment.LoggerSubflow.OverRides.Correlation,
+			--							InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id");
+
+		ELSE
+			IF (bAddMQMD) THEN
+				CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN 'MQMD';
+				DECLARE refMQMD REFERENCE TO OutputRoot.MQMD;
+				SET OutputRoot.MQMD.Expiry = 600;
+				
+				SET refMQMD.Version = MQMD_CURRENT_VERSION;
+				SET refMQMD.Format 	= MQFMT_STRING;
+				SET refMQMD.MsgType = MQMT_DATAGRAM;
+
+				IF EXISTS(InputLocalEnvironment.Destination.HTTP[]) THEN
+					CREATE NEXTSIBLING OF OutputRoot.MQMD DOMAIN 'MQRFH2';
+					CREATE LASTCHILD OF OutputRoot.MQRFH2 NAME 'usr';
+					DECLARE refUsr REFERENCE TO OutputRoot.MQRFH2.usr;
+					
+		      		SET refUsr.UserIdentifier = 
+		      				CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB);
+
+				END IF;
+
+
+			--	SET refUsr.UserIdentifier = InputRoot.XMLNSC.*:Envelope.*:Header.*:extensionList.*:extension.*:value;
+			--COALESCE(Environment.LoggerSubflow.OverRides.Correlation,
+			--							InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id");
+
+			END IF;									 
+		END IF;
+
+	--
+		--                          Environment.LoggerSubflow.OverRides.Correlation;
+		
+		
+		DECLARE sRoot, sRoot1 CHARACTER '';
+		SET sRoot = ResponseName;
+
+	   
+		CASE Format
+			
+			WHEN 'HTTP' THEN 
+				CALL ExceptionHTTPFormat();
+
+	--		WHEN 'SOAP' THEN
+	--	        CALL ExceptionSOAPFormat();
+		    WHEN 'CUSTOM' THEN
+			    CALL CustomExceptionFormat(sRoot);
+			ELSE 	
+				CALL ExceptionHTTPFormat();
+				
+			END CASE;			 
+		
+		
+	END;
+
+	-- Custom Exception Format	
+	CREATE PROCEDURE CustomExceptionFormat(IN sRoot CHARACTER)
+	BEGIN
+		
+		DECLARE bIncludeNS BOOLEAN FALSE;
+		SET bIncludeNS = IncludeNameSpace;
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC';
+		DECLARE chrFile CHAR;
+		DECLARE chrFunction CHAR;
+		DECLARE chrType CHAR;
+		DECLARE chrName CHAR;
+		DECLARE chrLabel CHAR;
+		DECLARE chrText CHAR;
+		DECLARE chrCatalog CHAR;
+		DECLARE intSeverity INTEGER;
+		DECLARE intNumber INTEGER;
+		DECLARE intLine INTEGER;
+		
+		SET chrLabel = '';
+		CALL RetrieveMostInnerChild(InputExceptionList, chrFile, intLine, chrFunction, chrType, 
+			chrName, chrLabel, chrText, chrCatalog, intSeverity, intNumber);
+
+		-- dont include namespace in CUSTOM
+		--IF (bIncludeNS) THEN
+		--	SET OutputRoot.XMLNSC.esbenv:{sRoot}.(XMLNSC.NamespaceDecl)xmlns:esbenv = esbenv;
+		--	SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.(XMLNSC.NamespaceDecl)xmlns:esbhdr = esbhdr;
+		--	SET OutputRoot.XMLNSC.esbenv:{sRoot}.esberr:Error.(XMLNSC.NamespaceDecl)xmlns:esberr = esberr;
+		--END IF;
+		
+		DECLARE refT REFERENCE TO InputLocalEnvironment.HTTP.Input.Timeout;
+		DECLARE refUsr REFERENCE TO InputRoot.MQRFH2.usr;
+		
+		IF LASTMOVE(refT) THEN
+				SET OutputRoot.XMLNSC.{sRoot}.Header.operationName = MessageFlowLabel;
+				IF EXISTS(InputRoot.HTTPInputHeader[]) THEN 
+ 					SET OutputRoot.XMLNSC.{sRoot}.Header.messageId = 
+ 							CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS CHAR); 
+				ELSEIF LASTMOVE(refUsr) THEN
+					 SET OutputRoot.XMLNSC.{sRoot}.Header.messageId = 
+					 		refUsr.xMessageTransId;
+				ELSE
+					SET OutputRoot.XMLNSC.{sRoot}.Header.messageId = CAST('000000000000000000000000000000000000000000000000' AS CHAR);
+					
+				END IF;
+				SET OutputRoot.XMLNSC.{sRoot}.Header.timestamp    = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd HH:mm:ss');
+				SET OutputRoot.XMLNSC.{sRoot}.Header.sourceSystem = 'ESB';
+				SET OutputRoot.XMLNSC.{sRoot}.Header.userId 		= 'IIB';
+
+				IF EXISTS(InputLocalEnvironment.Destination.HTTP[]) THEN
+		      		SET OutputRoot.XMLNSC.{sRoot}.Header.extensionList.extension.name = 'HTTPReplyIdentifier';
+		      		SET OutputRoot.XMLNSC.{sRoot}.Header.extensionList.extension.value = 
+		      				CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB);
+
+				END IF;
+		
+		ELSEIF EXISTS(InputRoot.XMLNSC.[>].Header[]) THEN
+			SET OutputRoot.XMLNSC.{sRoot}.Header = InputRoot.XMLNSC.[>].Header;	
+			CREATE NEXTSIBLING OF OutputRoot.XMLNSC.{sRoot}.Header.operationName NAME 'messageId' VALUE CAST(refUsr.xMessageTransId AS CHARACTER);		
+		
+		ELSEIF EXISTS(Environment.RequestState.XMLNSC.[>].Header[]) THEN
+			SET OutputRoot.XMLNSC.{sRoot}.Header = 
+					Environment.RequestState.XMLNSC.[>].Header;				
+				
+--		ELSEIF (bIncludeNS) THEN 
+--			IF EXISTS(Environment.Header[]) THEN
+--				SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header = Environment.esbhdr:Header;			
+--			ELSE
+--
+--				SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:operationName = MessageFlowLabel;
+--				IF EXISTS(OutputRoot.MQMD[]) THEN 
+-- 					SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:messageId = 
+-- 							CAST(InputRoot.MQMD.MsgId AS CHAR);
+-- 					 					
+--				ELSEIF EXISTS(InputRoot.HTTPInputHeader[]) THEN 
+-- 					SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:messageId = 
+-- 							CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS CHAR); 
+-- 					 					
+--				ELSE
+--					SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:messageId = CAST('000000000000000000000000000000000000000000000000' AS CHAR);
+--					
+--				END IF;
+--				SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:timestamp    = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyyMMdd-HHmmss');
+--				SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:sourceSystem = 'ESB';
+--				SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:userId 		= 'IIB';
+--
+--				IF EXISTS(InputLocalEnvironment.Destination.HTTP[]) THEN
+--		--			SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header = 'HTTPHeader';		
+--		      		SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:extensionList.esbhdr:extension.esbhdr:name = 'HTTPReplyIdentifier';
+--		      		SET OutputRoot.XMLNSC.esbenv:{sRoot}.esbhdr:Header.esbhdr:extensionList.esbhdr:extension.esbhdr:value = 
+--		      				CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB);
+--
+--		      		SET OutputRoot.MQRFH2.usr.UserIdentifier = 
+--		      				CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB);
+--				
+--				
+--				END IF;
+--
+--
+--			END IF;
+		ELSE
+--			IF EXISTS(Environment.esbhdr:Header[]) THEN
+--				SET OutputRoot.XMLNSC.{sRoot}.Header = Environment.esbhdr:Header;			
+--			ELSE
+
+				SET OutputRoot.XMLNSC.{sRoot}.Header.operationName = MessageFlowLabel;
+--				IF EXISTS(OutputRoot.MQMD[]) THEN 
+-- 					SET OutputRoot.XMLNSC.{sRoot}.Header.messageId = 
+-- 							CAST(InputRoot.MQMD.MsgId AS CHAR);
+-- 					 					
+				IF EXISTS(InputRoot.HTTPInputHeader[]) THEN 
+ 					SET OutputRoot.XMLNSC.{sRoot}.Header.messageId = 
+ 							CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS CHAR); 
+ 					 					
+				ELSE
+					SET OutputRoot.XMLNSC.{sRoot}.Header.messageId = CAST('000000000000000000000000000000000000000000000000' AS CHAR);
+					
+				END IF;
+				SET OutputRoot.XMLNSC.{sRoot}.Header.timestamp    = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd HH:mm:ss');
+				SET OutputRoot.XMLNSC.{sRoot}.Header.sourceSystem = 'ESB';
+				SET OutputRoot.XMLNSC.{sRoot}.Header.userId 		= 'IIB';
+
+				IF EXISTS(InputLocalEnvironment.Destination.HTTP[]) THEN
+		      		SET OutputRoot.XMLNSC.{sRoot}.Header.extensionList.extension.name = 'HTTPReplyIdentifier';
+		      		SET OutputRoot.XMLNSC.{sRoot}.Header.extensionList.extension.value = 
+		      				CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB);
+
+				END IF;
+
+--			END IF;
+			
+		END IF;		
+		
+		IF (bIncludeNS) THEN
+			SET OutputRoot.XMLNSC.esbenv:{sRoot}.esberr:Error.esberr:code = intNumber;
+			SET OutputRoot.XMLNSC.esbenv:{sRoot}.esberr:Error.esberr:description = chrText;
+			SET OutputRoot.XMLNSC.esbenv:{sRoot}.esberr:Error.esberr:application = Application;
+			SET OutputRoot.XMLNSC.esbenv:{sRoot}.esberr:Error.esberr:severity = SeverityText;
+			SET OutputRoot.XMLNSC.esbenv:{sRoot}.esberr:Error.esberr:system = SystemText;
+	 	ELSE
+			SET OutputRoot.XMLNSC.{sRoot}.Error.code = intNumber;
+			SET OutputRoot.XMLNSC.{sRoot}.Error.description = chrText;
+			SET OutputRoot.XMLNSC.{sRoot}.Error.application = Application;			
+			SET OutputRoot.XMLNSC.{sRoot}.Error.severity = SeverityText;
+			SET OutputRoot.XMLNSC.{sRoot}.Error.system = SystemText;
+		END IF;
+	END;
+
+	-- Exception HTTP Format	
+	CREATE PROCEDURE ExceptionHTTPFormat()
+	BEGIN
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC';
+		DECLARE chrFile CHAR;
+		DECLARE chrFunction CHAR;
+		DECLARE chrType CHAR;
+		DECLARE chrName CHAR;
+		DECLARE chrLabel CHAR;
+		DECLARE chrText CHAR;
+		DECLARE chrCatalog CHAR;
+		DECLARE intSeverity INTEGER;
+		DECLARE intNumber INTEGER;
+		DECLARE intLine INTEGER;
+		
+		SET chrLabel = '';
+		CALL RetrieveMostInnerChild(InputExceptionList, chrFile, intLine, chrFunction, chrType, 
+			chrName, chrLabel, chrText, chrCatalog, intSeverity, intNumber);
+
+		IF EXISTS(Environment.RequestState.esbenv:Envelope.esbhdr:Header[]) THEN
+			SET OutputRoot.XMLNSC.http.header = 
+					Environment.RequestState.esbenv:Envelope.esbhdr:Header;
+		
+		ELSEIF EXISTS(Environment.esbhdr:Header[]) THEN
+			SET OutputRoot.XMLNSC.http.header = Environment.esbhdr:Header;
+			
+		ELSEIF EXISTS(InputRoot.SOAP.Header.esbhdr:Header[]) THEN
+			SET OutputRoot.XMLNSC.http.header = InputRoot.SOAP.Header.esbhdr:Header;
+		
+		ELSE
+
+				SET OutputRoot.XMLNSC.http.header.operationName = MessageFlowLabel;
+				IF EXISTS(OutputRoot.MQMD[]) THEN 
+ 					SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:messageId = 
+ 							CAST(InputRoot.MQMD.MsgId AS CHAR);
+ 					 					
+				ELSEIF EXISTS(InputRoot.HTTPInputHeader[]) THEN 
+ 					SET OutputRoot.XMLNSC.http.header.messageId = 
+ 							CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS CHAR); 
+ 					 					
+				ELSE
+					SET OutputRoot.XMLNSC.http.header.messageId = CAST('000000000000000000000000000000000000000000000000' AS CHAR);
+					
+				END IF;
+				SET OutputRoot.XMLNSC.http.header.timestamp    = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd HH:mm:ss');
+				SET OutputRoot.XMLNSC.http.header.sourceSystem = 'ESB';
+				SET OutputRoot.XMLNSC.http.header.userId 		= 'IIB';
+
+		END IF;		
+		
+		
+		SET OutputRoot.XMLNSC.http.error.code = intNumber;
+		SET OutputRoot.XMLNSC.http.error.message = chrText;
+		SET OutputRoot.XMLNSC.http.error.severity = SeverityText;
+		SET OutputRoot.XMLNSC.http.error.system = SystemText;
+
+	END;
+
+	
+	-- Exception SOAP Format	
+	CREATE PROCEDURE ExceptionSOAPFormat()
+	BEGIN
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC';
+		DECLARE chrFile CHAR;
+		DECLARE chrFunction CHAR;
+		DECLARE chrType CHAR;
+		DECLARE chrName CHAR;
+		DECLARE chrLabel CHAR;
+		DECLARE chrText CHAR;
+		DECLARE chrCatalog CHAR;
+		DECLARE intSeverity INTEGER;
+		DECLARE intNumber INTEGER;
+		DECLARE intLine INTEGER;
+		
+		SET chrLabel = '';
+		CALL RetrieveMostInnerChild(InputExceptionList, chrFile, intLine, chrFunction, chrType, 
+			chrName, chrLabel, chrText, chrCatalog, intSeverity, intNumber);
+
+		SET OutputRoot.XMLNSC.esbenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:esbenv = esbenv;
+		SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.(XMLNSC.NamespaceDecl)xmlns:esbhdr = esbhdr;
+		SET OutputRoot.XMLNSC.esbenv:Envelope.esberr:Error.(XMLNSC.NamespaceDecl)xmlns:esberr = esberr;
+		
+		IF EXISTS(Environment.RequestState.esbenv:Envelope.esbhdr:Header[]) THEN
+			SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header = 
+					Environment.RequestState.esbenv:Envelope.esbhdr:Header;
+		
+		ELSEIF EXISTS(Environment.esbhdr:Header[]) THEN
+			SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header = Environment.esbhdr:Header;
+			
+		ELSEIF EXISTS(InputRoot.SOAP.Header.esbhdr:Header[]) THEN
+			SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header = InputRoot.SOAP.Header.esbhdr:Header;
+		
+		ELSE
+
+				SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:operationName = MessageFlowLabel;
+				IF EXISTS(OutputRoot.MQMD[]) THEN 
+ 					SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:messageId = 
+ 							CAST(InputRoot.MQMD.MsgId AS CHAR);
+ 					 					
+				ELSEIF EXISTS(InputRoot.HTTPInputHeader[]) THEN 
+ 					SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:messageId = 
+ 							CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS CHAR); 
+ 					 					
+				ELSE
+					SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:messageId = CAST('000000000000000000000000000000000000000000000000' AS CHAR);
+					
+				END IF;
+				SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:timestamp    
+						= CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd HH:mm:ss');
+				SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:sourceSystem = 'ESB';
+				SET OutputRoot.XMLNSC.esbenv:Envelope.esbhdr:Header.esbhdr:userId 		= 'IIB';
+
+		END IF;		
+		
+		
+		SET OutputRoot.XMLNSC.esbenv:Envelope.esberr:Error.esberr:code = intNumber;
+		SET OutputRoot.XMLNSC.esbenv:Envelope.esberr:Error.esberr:message = chrText;
+		SET OutputRoot.XMLNSC.esbenv:Envelope.esberr:Error.esberr:severity = SeverityText;
+		SET OutputRoot.XMLNSC.esbenv:Envelope.esberr:Error.esberr:system = SystemText;
+
+	END;
+	

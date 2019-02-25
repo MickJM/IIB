@@ -1,0 +1,31 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'MQMD';
+
+		SET OutputRoot.MQMD.Version = MQMD_CURRENT_VERSION;
+		SET OutputRoot.MQMD.Format = MQFMT_STRING;
+		SET OutputRoot.MQMD.Expiry = 600;
+		SET OutputRoot.MQMD.MsgType = MQMT_REPLY;
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'BLOB';
+		DECLARE refOrig REFERENCE TO Environment.variables.BLOB;
+		SET OutputRoot.BLOB.BLOB = refOrig.Original;
+				
+		--SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName 
+		--	= Environment.variables.JSON.Data.replyqueue;
+		--SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueManagerName 
+		--	= Environment.variables.JSON.Data.ReplyQmgr;
+
+		SET OutputRoot.MQMD.ReplyToQ 
+			= Environment.variables.JSON.Data.replyqueue;
+		SET OutputRoot.MQMD.ReplyToQMgr 
+			= Environment.variables.JSON.Data.ReplyQmgr;
+			
+		RETURN TRUE;
+
+
+
+	END;

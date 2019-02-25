@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="maersk/iib/errorhandler/v1/sfErrorHandler_v1.subflow" nsPrefix="maersk_iib_errorhandler_v1_sfErrorHandler_v1.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.SeverityText" name="SeverityText">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.System" name="System">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.Format" name="Format" lowerBound="1" defaultValueLiteral="HTTP; SOAP; CUSTOM">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.IncludeNameSpace" name="IncludeNameSpace" lowerBound="1">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.ResponseName" name="ResponseName">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.Application" name="Application">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="sfErrorHandler_v1" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libMQFunctions_v1/icons/full/obj16/sfErrorHandler_v1.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libMQFunctions_v1/icons/full/obj30/sfErrorHandler_v1.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="65,151">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="650,143">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="239,205" computeExpression="esql://routine/maersk.iib.errorhandler.v1#sfErrorHandler_v1_Transform_ExceptionList_into_ErrorBlock.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="Transform ExceptionList into ErrorBlock"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Severity" configurable="true" userDefined="true" describedAttribute="Property.SeverityText">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.SeverityText" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+        <propertyDescriptor groupName="Group.Severity" configurable="true" userDefined="true" describedAttribute="Property.System">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.System" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+          <propertyDescriptor groupName="Group.ReplyFormat" configurable="true" userDefined="true" describedAttribute="Property.Format">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.Format" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+            <propertyDescriptor groupName="Group.CustomFormat" configurable="true" userDefined="true" describedAttribute="Property.IncludeNameSpace">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.IncludeNameSpace" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+              <propertyDescriptor groupName="Group.CustomFormat" configurable="true" userDefined="true" describedAttribute="Property.ResponseName">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.ResponseName" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+                <propertyDescriptor groupName="Group.Severity" configurable="true" userDefined="true" describedAttribute="Property.Application">
+                  <propertyName xmi:type="utility:TranslatableString" key="Property.Application" bundleName="maersk/iib/errorhandler/v1/sfErrorHandler_v1" pluginId="libMQFunctions_v1"/>
+                </propertyDescriptor>
+              </propertyDescriptor>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

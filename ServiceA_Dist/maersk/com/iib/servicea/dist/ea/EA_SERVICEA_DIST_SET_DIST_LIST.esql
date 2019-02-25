@@ -1,0 +1,25 @@
+BROKER SCHEMA maersk.com.iib.servicea.dist.ea
+
+
+CREATE COMPUTE MODULE EA_SERVICEA_DIST_SET_DIST_LIST
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName 
+			= 'SERVICEA.DESTA';
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[2].queueName 
+			= 'SERVICEA.DESTB';
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[3].queueName 
+			= 'SERVICEA.DESTC';
+			
+	--	SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueManagerName 
+	--		= 'TSTQPD01';
+		
+	
+
+		RETURN TRUE;
+
+	END;
+END MODULE;

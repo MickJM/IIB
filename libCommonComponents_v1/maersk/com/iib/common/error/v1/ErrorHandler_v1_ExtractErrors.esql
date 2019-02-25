@@ -36,10 +36,11 @@ CREATE COMPUTE MODULE ErrorHandler_v1_ExtractErrors
 		CREATE LASTCHILD OF OutputRoot.JSON.Data NAME 'error'; 	  		
 		DECLARE refErr REFERENCE TO OutputRoot.JSON.Data."error";
 		
-		SET refErr.operationName = MessageFlowLabel;
+		SET refErr.flowName = MessageFlowLabel;
 		SET refErr.brokerName = BrokerName;
 		IF EXISTS(OutputRoot.MQMD[]) THEN 
 			SET refErr.messageId = CAST(InputRoot.MQMD.MsgId AS CHAR);
+			SET refErr.correlationId = CAST(InputRoot.MQMD.CorrelId AS CHAR);
 			
 		ELSEIF EXISTS(InputRoot.HTTPInputHeader[]) THEN 
 			SET refErr.messageId = CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS CHAR); 

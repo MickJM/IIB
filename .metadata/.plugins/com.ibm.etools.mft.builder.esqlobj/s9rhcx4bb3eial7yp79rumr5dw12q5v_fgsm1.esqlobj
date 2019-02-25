@@ -1,0 +1,10 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		
+       	SET OutputRoot.MQMD.Expiry = 600;
+		RETURN TRUE;
+
+
+	END;

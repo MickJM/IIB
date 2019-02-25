@@ -1,0 +1,15 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName 
+			= 'SERVICEA.DISTA';
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueManagerName 
+			= 'TSTQPD01';
+		
+	
+
+		RETURN TRUE;
+
+	END;

@@ -1,0 +1,37 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		SET OutputRoot.Properties  = InputRoot.Properties;
+	--	CREATE LASTCHILD OF OutputRoot NAME 'HTTPOutputHeader';
+	--	DECLARE refHTTP REFERENCE TO OutputRoot.HTTPOutputHeader;
+
+		DECLARE refIn REFERENCE TO InputRoot.JSON.Data;		
+		SET OutputRoot."HTTPRequestHeader"."api_key" = refIn.id;
+		
+		--'8092a4af-8cef-451c-897f-50f96c29bda5';
+	--	SET refHTTP."api_key" = '8092a4af-8cef-451c-897f-50f96c29bda5';
+
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON' NAME 'JSON';
+		CREATE FIELD OutputRoot.JSON.Data IDENTITY (JSON.Object)Data;
+		DECLARE refOut REFERENCE TO OutputRoot.JSON.Data;
+
+		DECLARE refInMQMD REFERENCE TO InputRoot.MQMD;		
+		DECLARE chrData CHARACTER '';
+		SET chrData = 'text';
+		-- {"ReplyQmgr":"'
+		--	|| refInMQMD.ReplyToQMgr
+		--	|| '","replyqueue":"'
+		--	|| refInMQMD.ReplyToQ
+		--	|| '"}';
+			
+		--SET refOut.uuid = '8092a4af-8cef-451c-897f-50f96c29bda4';
+		SET refOut.uuid = UUIDASCHAR;
+		SET refOut.owner = BrokerName;
+		SET refOut.data = chrData;
+		
+		SET Environment.StateMQMD.CorrelId = refOut.uuid;
+		--SET Environment.StateMQMD.MsgId = UUIDASCHAR;
+
+		RETURN TRUE;
+	END;

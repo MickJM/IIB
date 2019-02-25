@@ -1,0 +1,13 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET OutputRoot.Properties  = InputRoot.Properties;
+		DECLARE refIn REFERENCE TO InputRoot.JSON.Data;		
+
+		DECLARE refMQMD REFERENCE TO InputRoot.MQMD;
+		SET OutputRoot."HTTPRequestHeader"."api_key" = refIn.id;
+		SET OutputRoot."HTTPRequestHeader"."correlId" = refMQMD.CorrelId;
+						
+		RETURN TRUE;
+
+	END;

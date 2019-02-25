@@ -1,0 +1,8 @@
+package maersk.com.java.helpers;
+
+public class EnvVariable {
+
+	public static String get(String param) {
+		return "Hello World";
+	}
+}

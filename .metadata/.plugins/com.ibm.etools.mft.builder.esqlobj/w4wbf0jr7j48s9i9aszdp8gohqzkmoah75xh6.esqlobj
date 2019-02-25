@@ -1,0 +1,24 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'BLOB';
+		DECLARE refOrig REFERENCE TO Environment.variables.BLOB;
+		SET OutputRoot.BLOB.BLOB = refOrig.Original;
+		
+		
+		CREATE LASTCHILD OF Environment.variables DOMAIN 'BLOB';
+		DECLARE refOrig REFERENCE TO Environment.variables.BLOB;
+		SET refOrig.Original = InputRoot.BLOB.BLOB;
+		
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName 
+			= Environment.variables.JSON.Data.replyqueue;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueMgr 
+			= Environment.variables.JSON.Data.ReplyQmgr;
+			
+
+
+
+
+	END;

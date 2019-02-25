@@ -1,0 +1,6 @@
+BROKER SCHEMA maersk.com.java.helpers
+
+CREATE FUNCTION getVariable(IN P1 CHARACTER, INOUT P2 CHARACTER)
+	RETURNS INTEGER
+	LANGUAGE JAVA
+	EXTERNAL NAME "maersk.com.java.helpers.EnvVariable.get";

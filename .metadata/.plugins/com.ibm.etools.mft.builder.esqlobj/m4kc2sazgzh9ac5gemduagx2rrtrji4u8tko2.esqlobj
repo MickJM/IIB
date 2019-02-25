@@ -1,0 +1,63 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		
+		DECLARE msgId, correlId BLOB;		
+		DECLARE textMsgId CHARACTER '';		
+		DECLARE textCorrelId CHARACTER '';
+		DECLARE suffix CHARACTER '';
+
+		-- MessageId
+		--SET suffix = UUIDASCHAR;		
+		--SET textMsgId = 'AMQ ' || UPPER(BrokerName) || ' ' || SUBSTRING(suffix FROM 1 FOR 11);
+		--SET msgId = CAST(textMsgId AS BLOB CCSID InputRoot.Properties.CodedCharSetId);
+		--SET msgId = Environment.variables.origCorrelId;
+		SET msgId = Environment.variables.origMsgId;
+		
+		-- CorrelationId
+		--SET suffix = UUIDASCHAR;		
+		--SET textCorrelId = 'AMQ ' || UPPER(BrokerName) || ' ' || SUBSTRING(suffix FROM 1 FOR 11);
+		--SET correlId = CAST(textCorrelId AS BLOB CCSID InputRoot.Properties.CodedCharSetId);
+		--SET correlId = Environment.variables.origCorrelId;
+		SET correlId = Environment.variables.origMsgId;
+		
+		SET OutputRoot.Properties  = InputRoot.Properties;
+	--	CREATE LASTCHILD OF OutputRoot NAME 'HTTPOutputHeader';
+	--	DECLARE refHTTP REFERENCE TO OutputRoot.HTTPOutputHeader;
+
+		DECLARE refIn REFERENCE TO InputRoot.JSON.Data;		
+		SET OutputRoot."HTTPRequestHeader"."api_key" = refIn.id;
+		
+		--'8092a4af-8cef-451c-897f-50f96c29bda5';
+	--	SET refHTTP."api_key" = '8092a4af-8cef-451c-897f-50f96c29bda5';
+
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON' NAME 'JSON';
+		CREATE FIELD OutputRoot.JSON.Data IDENTITY (JSON.Object)Data;
+		DECLARE refOut REFERENCE TO OutputRoot.JSON.Data;
+
+		DECLARE chrData CHARACTER '';
+		--SET chrData = '{"ReplyQmgr":"'
+		--	|| trim(Environment.variables.ReplyQmgr)
+		--	|| '","ReplyQueue":"'
+		--	|| trim(Environment.variables.ReplyToQueue)
+		--	|| '"}';
+
+		SET chrData = '{"ReplyQmgr":"'
+			|| trim(Environment.variables.ReplyQmgr)
+			|| '","ReplyQueue":"'
+			|| trim(Environment.variables.ReplyToQueue)
+			|| '"}';
+			
+		--SET refOut.uuid = '8092a4af-8cef-451c-897f-50f96c29bda4';
+		SET refOut.uuid = correlId;
+		--UUIDASBLOB;
+		SET refOut.owner = BrokerName;
+		SET refOut.data = chrData;
+		
+		SET Environment.StateMQMD.MsgId = msgId;
+		SET Environment.StateMQMD.CorrelId = correlId;
+		
+		--SET Environment.StateMQMD.MsgId = UUIDASCHAR;
+
+		RETURN TRUE;
+	END;

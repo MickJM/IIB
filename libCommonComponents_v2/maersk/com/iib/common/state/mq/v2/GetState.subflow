@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQGet.msgnode="ComIbmMQGet.msgnode" xmlns:ComIbmThrow.msgnode="ComIbmThrow.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="maersk/com/iib/common/state/mq/v2/GetState.subflow" nsPrefix="maersk_com_iib_common_state_mq_v2_GetState.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.transactionMode" name="transactionMode" lowerBound="1" eType="//@eClassifiers.1" defaultValueLiteral="yes"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.queueName" name="queueName" lowerBound="1" defaultValueLiteral="STATE.QUEUE">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.browse" name="browse" defaultValueLiteral="false">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.browse.internal_npcompiler" name="browse.internal_npcompiler">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.waitInterval" name="waitInterval" lowerBound="1" defaultValueLiteral="1000">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.getWithCorrelID" name="getWithCorrelID" lowerBound="1" defaultValueLiteral="false">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.getWithCorrelID.internal_npcompiler" name="getWithCorrelID.internal_npcompiler">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.getWithMessageID" name="getWithMessageID" lowerBound="1" defaultValueLiteral="false">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.getWithMessageID.internal_npcompiler" name="getWithMessageID.internal_npcompiler">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="GetState" bundleName="maersk/com/iib/common/state/mq/v2/GetState" pluginId="libCommonComponents_v2"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libCommonComponents_v2/icons/full/obj16/GetState.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libCommonComponents_v2/icons/full/obj30/GetState.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="138,262">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="maersk/com/iib/common/state/mq/v2/GetState" pluginId="libCommonComponents_v2"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQGet.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="343,262" queueName="STATE.QUEUE" messageDomainProperty="XMLNSC" generateMode="none" inputMQMDLocation="InputRoot.MQMD" outputDataLocation="Environment.RequestState">
+        <translation xmi:type="utility:ConstantString" string="MQ Get"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output1" location="817,263">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="maersk/com/iib/common/state/mq/v2/GetState" pluginId="libCommonComponents_v2"/>
+      </nodes>
+      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="637,409" messageNumber="3501" messageText="No state message found">
+        <translation xmi:type="utility:ConstantString" string="No State Message"/>
+      </nodes>
+      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="518,93" messageNumber="3502" messageText="Failure while getting state message">
+        <translation xmi:type="utility:ConstantString" string="Failure While Getting State Message"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="599,262" computeExpression="esql://routine/maersk.com.iib.common.state.mq.v2#GetState_RestoreState.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="RestoreState"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.noMessage" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.warning" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.transactionMode">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.transactionMode" bundleName="ComIbmMQGet" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+        <propertyDescriptor groupName="Group.Basic" propertyEditor="com.ibm.etools.mft.ibmnodes.editors.mq.MQQueueNameEditor" configurable="true" describedAttribute="Property.queueName">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.queueName" bundleName="ComIbmMQGet" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+          <propertyDescriptor groupName="Group.Basic" compiler="com.ibm.etools.mft.ibmnodes.compilers.BooleanPropertyCompiler" describedAttribute="Property.browse">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.browse" bundleName="ComIbmMQGet" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+            <propertyDescriptor groupName="Group.InternalRuntimeGroup" readOnly="true" hidden="true" userDefined="true" describedAttribute="Property.browse.internal_npcompiler">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.browse.internal_npcompiler" bundleName="maersk/com/iib/common/state/mq/v2/GetState" pluginId="libCommonComponents_v2"/>
+              <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.waitInterval">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.waitInterval" bundleName="ComIbmMQGet" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+                <propertyDescriptor groupName="Group.Request" compiler="com.ibm.etools.mft.ibmnodes.compilers.BooleanPropertyCompiler" describedAttribute="Property.getWithCorrelID">
+                  <propertyName xmi:type="utility:TranslatableString" key="Property.getWithCorrelID" bundleName="ComIbmMQGet" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+                  <propertyDescriptor groupName="Group.InternalRuntimeGroup" readOnly="true" hidden="true" userDefined="true" describedAttribute="Property.getWithCorrelID.internal_npcompiler">
+                    <propertyName xmi:type="utility:TranslatableString" key="Property.getWithCorrelID.internal_npcompiler" bundleName="maersk/com/iib/common/state/mq/v2/GetState" pluginId="libCommonComponents_v2"/>
+                    <propertyDescriptor groupName="Group.Request" compiler="com.ibm.etools.mft.ibmnodes.compilers.BooleanPropertyCompiler" describedAttribute="Property.getWithMessageID">
+                      <propertyName xmi:type="utility:TranslatableString" key="Property.getWithMessageID" bundleName="ComIbmMQGet" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+                      <propertyDescriptor groupName="Group.InternalRuntimeGroup" readOnly="true" hidden="true" userDefined="true" describedAttribute="Property.getWithMessageID.internal_npcompiler">
+                        <propertyName xmi:type="utility:TranslatableString" key="Property.getWithMessageID.internal_npcompiler" bundleName="maersk/com/iib/common/state/mq/v2/GetState" pluginId="libCommonComponents_v2"/>
+                      </propertyDescriptor>
+                    </propertyDescriptor>
+                  </propertyDescriptor>
+                </propertyDescriptor>
+              </propertyDescriptor>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <attributeLinks promotedAttribute="Property.transactionMode" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmMQGet.msgnode#Property.transactionMode"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.queueName" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmMQGet.msgnode#Property.queueName"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.browse" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmMQGet.msgnode#Property.browse"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.waitInterval" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmMQGet.msgnode#Property.waitInterval"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.getWithCorrelID" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmMQGet.msgnode#Property.getWithCorrelID"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.getWithMessageID" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmMQGet.msgnode#Property.getWithMessageID"/>
+    </attributeLinks>
+    <stickyBoard>
+      <stickyNote location="1043,198">
+        <body xmi:type="utility:ConstantString" string="3501 - No state message found&#xA;3502 - Failure while getting state message&#xA;3505&#xA;3506 - Error getting correlId from Cassandra&#xA;3507 - Error retrieving state information"/>
+      </stickyNote>
+    </stickyBoard>
+  </eClassifiers>
+  <eClassifiers xmi:type="ecore:EEnum">
+    <eLiterals xmi:id="transactionMode.automatic" name="automatic"/>
+    <eLiterals xmi:id="transactionMode.yes" name="yes" value="1"/>
+    <eLiterals xmi:id="transactionMode.no" name="no" value="2"/>
+  </eClassifiers>
+</ecore:EPackage>

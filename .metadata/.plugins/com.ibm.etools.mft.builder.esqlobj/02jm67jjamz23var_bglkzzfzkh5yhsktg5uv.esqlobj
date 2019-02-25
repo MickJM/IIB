@@ -1,0 +1,17 @@
+CREATE COMPUTE MODULE GetState_CreateMQMD
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName 
+			= Environment.variables.JSON.Data.replyqueue;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueMgr 
+			= Environment.variables.JSON.Data.ReplyQmgr;
+			
+
+
+
+
+	END;
+END MODULE;

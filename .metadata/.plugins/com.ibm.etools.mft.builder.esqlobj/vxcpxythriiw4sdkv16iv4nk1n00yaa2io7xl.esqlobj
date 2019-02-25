@@ -1,0 +1,21 @@
+CREATE COMPUTE MODULE GetState_CreateMQMD
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'BLOB';
+		DECLARE refOrig REFERENCE TO Environment.variables.BLOB;
+		SET OutputRoot.BLOB.BLOB = refOrig.;
+		
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName 
+			= Environment.variables.JSON.Data.replyqueue;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueMgr 
+			= Environment.variables.JSON.Data.ReplyQmgr;
+			
+
+
+
+
+	END;
+END MODULE;

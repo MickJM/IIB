@@ -1,0 +1,146 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Save IIB State"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "michael.moriarty@maersk.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8098"
+basePath: "/"
+tags:
+- name: "iibState"
+  description: "Save and Get IIB State"
+schemes:
+- "http"
+paths:
+  /iib/key/generate:
+    get:
+      tags:
+      - "iibState"
+      summary: "Return a new UUID key"
+      description: "Returns a UUID key to be used for subsequent calls"
+      operationId: "generate"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/iibKey"
+        400:
+          description: "Invalid status value"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/errorResponse"
+        404:
+          description: "Not found"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/errorResponse"              
+      security:
+      - api_key: []
+  /iib/savestate:
+    post:
+      tags:
+      - "iibState"
+      summary: "Save state"
+      description: "Save state to Cassandra"
+      operationId: "saveState"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/iibKey"
+        400:
+          description: "Invalid status value"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/errorResponse"
+        404:
+          description: "Not found"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/errorResponse"              
+      security:
+      - api_key: []
+  /iib/getstate:
+    get:
+      tags:
+      - "iibState"
+      summary: "Get state"
+      description: "Get state to Cassandra"
+      operationId: "getState"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/iibKey"
+        400:
+          description: "Invalid status value"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/errorResponse"
+        404:
+          description: "Not found"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/errorResponse"              
+      security:
+      - api_key: []
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  iibKey:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "id"
+      success:
+        type: "boolean"
+        default: false
+  errorResponse:
+    type: "object"
+    properties:
+      timestamp:
+        type: "string"
+        description: "Time stamp"
+      status:
+        type: "integer"
+        description: "Error status code"
+      error:
+        type: "string"
+        description: "Error type"
+      message:
+        type: "string"
+        description: "Error message"
+      path:
+        type: "string"
+        description: "URL"
+        
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

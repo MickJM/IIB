@@ -1,0 +1,25 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot = InputRoot;
+		
+		--DECLARE refIn REFERENCE TO InputRoot.JSON.Data;
+
+		DECLARE refIn REFERENCE TO Environment.State.Response;
+		DECLARE data CHARACTER '';
+		
+		IF LASTMOVE(refIn) THEN 
+			SET data = refIn.data;
+			CREATE LASTCHILD OF Environment.variables DOMAIN 'JSON' 
+					PARSE(data CCSID InputRoot.Properties.CodedCharSetId 
+								ENCODING InputRoot.Properties.Encoding);
+			
+		END IF;
+		
+		
+		RETURN TRUE;
+
+
+	END;

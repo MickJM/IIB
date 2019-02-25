@@ -1,0 +1,5 @@
+BROKER SCHEMA maersk.com.java.helpers
+-- https://developer.ibm.com/answers/questions/204079/how-to-call-java-method-from-compute-node-using-es/
+CREATE PROCEDURE get(IN P1 INTEGER)
+	LANGUAGE JAVA
+	EXTERNAL NAME "maersk.com.java.helpers.EnvVariable.get";

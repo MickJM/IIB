@@ -1,0 +1,23 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET OutputRoot = InputRoot;
+		--IF (SaveState = FALSE) THEN
+		--	RETURN TRUE;
+		--END IF;
+				
+		CREATE LASTCHILD OF Environment.variables DOMAIN 'BLOB';
+		DECLARE refOrig REFERENCE TO Environment.variables.BLOB;
+		SET refOrig.Original = InputRoot.BLOB.BLOB;
+		
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.MsgId = refIn.MsgId;
+		SET Environment.variables.CorrelId = refIn.CorrelId;
+		
+		PROPAGATE TO TERMINAL 'out1' DELETE NONE;
+		
+		RETURN FALSE;
+
+
+
+	END;

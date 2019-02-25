@@ -1,0 +1,22 @@
+BROKER SCHEMA maersk.com.iib.common.state.database.v2
+
+
+CREATE COMPUTE MODULE GetState_Setup_API_Call
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		--SET OutputRoot = InputRoot;
+		
+		SET OutputRoot.Properties  = InputRoot.Properties;
+		--DECLARE refIn REFERENCE TO InputRoot.JSON.Data;		
+		
+		DECLARE refIn REFERENCE TO Environment.State.key.JSON.Data;		
+
+		DECLARE refMQMD REFERENCE TO InputRoot.MQMD;
+		SET OutputRoot."HTTPRequestHeader"."api_key" = refIn.id;
+		SET OutputRoot."HTTPRequestHeader"."correlId" = Environment.variables.CorrelId;
+						
+		RETURN TRUE;
+
+	END;
+END MODULE;

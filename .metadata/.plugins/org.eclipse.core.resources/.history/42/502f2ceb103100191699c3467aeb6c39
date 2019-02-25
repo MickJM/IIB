@@ -1,0 +1,13 @@
+BROKER SCHEMA maersk.com.iib.common.state.database.v2
+
+
+CREATE COMPUTE MODULE SaveState_Copy_MQMD
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET Environment.StateMQMD.CorrelId = InputLocalEnvironment.WrittenDestination.MQ.DestinationData.correlId;
+		RETURN TRUE;
+
+
+	END;
+END MODULE;

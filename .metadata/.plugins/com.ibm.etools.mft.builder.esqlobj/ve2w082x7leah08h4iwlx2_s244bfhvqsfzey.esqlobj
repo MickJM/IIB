@@ -1,0 +1,8 @@
+CREATE PROCEDURE SetUpHTTPHeaders_v1(INOUT refOut REFERENCE, IN conversationId CHAR, IN messageId BLOB) BEGIN
+
+	SET refOut.HTTPRequestHeader."X-Message-Transaction-Correlation-Id" 	= messageId;
+	SET refOut.HTTPRequestHeader."X-Message-Origin-Application-Servername" 	= BrokerName || '-' || ExecutionGroupLabel;
+	SET refOut.HTTPRequestHeader."X-Message-Origin-Application-Name" 		= MessageFlowLabel;
+	SET refOut.HTTPRequestHeader."X-Message-Origin-Application-Session-ID" 	= conversationId;
+
+END;

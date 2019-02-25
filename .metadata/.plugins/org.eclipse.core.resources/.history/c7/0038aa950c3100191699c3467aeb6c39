@@ -1,0 +1,75 @@
+BROKER SCHEMA maersk.com.iib.common.mq.mqmd.v2
+
+DECLARE ExpiryTime EXTERNAL INTEGER 600;
+
+CREATE COMPUTE MODULE createMQMD_v1_CreateMQMD
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL AddMQMD();
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE AddMQMD() BEGIN
+
+		-- If there is no MQMD, then create it ...
+		IF NOT EXISTS(InputRoot.MQMD[]) THEN
+			CALL ConstructMQMD();
+		ELSE
+			SET OutputRoot.MQMD = InputRoot.MQMD;
+			SET OutputRoot.MQRFH2 = InputRoot.MQRFH2;
+		END IF;
+	
+		SET OutputRoot.JSON = InputRoot.JSON;					
+	
+	END;
+
+	CREATE PROCEDURE ConstructMQMD() BEGIN
+
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'MQMD';
+
+		SET OutputRoot.MQMD.Version = MQMD_CURRENT_VERSION;
+		SET OutputRoot.MQMD.Format = MQFMT_STRING;
+		SET OutputRoot.MQMD.Expiry = ExpiryTime;
+		SET OutputRoot.MQMD.MsgType = MQMT_REQUEST;
+		SET OutputRoot.MQMD.ReplyToQ = 'KAFKA.RESPONSE';
+		
+		IF EXISTS(Environment.MQMD[]) THEN			
+			SET OutputRoot.MQMD	= Environment.MQMD;						
+		ELSE
+			IF EXISTS(Environment.RequestState.MQMD[]) THEN
+				SET OutputRoot.MQMD = Environment.RequestState.MQMD;
+			END IF;
+		END IF;				
+
+		IF EXISTS(Environment.RequestState.MQRFH2[]) THEN
+			SET OutputRoot.MQRFH2.*[] = Environment.RequestState.MQRFH2.*[];
+		ELSE		
+			CREATE NEXTSIBLING OF OutputRoot.MQMD DOMAIN 'MQRFH2';
+			CREATE LASTCHILD OF OutputRoot.MQRFH2 NAME 'usr';
+			DECLARE refUsr REFERENCE TO OutputRoot.MQRFH2.usr;
+			--	
+			IF EXISTS(InputLocalEnvironment.Destination.HTTP[]) THEN
+				SET refUsr.UserIdentifier = CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS BLOB); 
+			END IF;
+			
+			DECLARE refCorr REFERENCE TO InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id";
+			IF LASTMOVE(refCorr) THEN
+				SET refUsr.xMessageTransId = CAST(InputRoot.HTTPInputHeader."X-Message-Transaction-Correlation-Id" AS BLOB); 
+			END IF;
+			
+			DECLARE refKafkaTopic REFERENCE TO InputRoot.HTTPInputHeader."X-Kafka-Topic";
+			IF LASTMOVE(refKafkaTopic) THEN
+				SET refUsr."X-KafkaTopicName" = CAST(InputRoot.HTTPInputHeader."X-Kafka-Topic" AS CHARACTER); 
+			END IF;
+			
+			DECLARE refReplyQyeue REFERENCE TO InputRoot.HTTPInputHeader."X-Reply-Queue";
+			IF LASTMOVE(refReplyQyeue) THEN
+				SET refUsr."X-ReplyQueue" = CAST(InputRoot.HTTPInputHeader."X-Reply-Queue" AS CHARACTER); 
+			END IF;
+			SET refUsr."X-ReplyQueue" = CAST(InputRoot.HTTPInputHeader."X-Reply-Queue" AS CHARACTER); 
+			
+		END IF;					
+		
+	END;  
+	
+END MODULE;

@@ -1,0 +1,17 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		SET OutputRoot.Properties  = InputRoot.Properties;
+		DECLARE refIn REFERENCE TO InputRoot.JSON.Data;		
+
+		DECLARE refMQMD REFERENCE TO InputRoot.MQMD;
+		SET OutputRoot."HTTPRequestHeader"."api_key" = refIn.id;
+		SET OutputRoot."HTTPRequestHeader"."correlId" = refMQMD.CorrelId				
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON' NAME 'JSON';
+		CREATE FIELD OutputRoot.JSON.Data IDENTITY (JSON.Object)Data;
+		DECLARE refOut REFERENCE TO OutputRoot.JSON.Data;
+
+
+
+
+	END;

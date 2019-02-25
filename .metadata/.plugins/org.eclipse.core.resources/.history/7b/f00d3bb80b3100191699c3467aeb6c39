@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmFlowOrder.msgnode="ComIbmFlowOrder.msgnode" xmlns:ComIbmMQHeader.msgnode="ComIbmMQHeader.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ComIbmPassthru.msgnode="ComIbmPassthru.msgnode" xmlns:ComIbmRESTRequest.msgnode="ComIbmRESTRequest.msgnode" xmlns:ComIbmThrow.msgnode="ComIbmThrow.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow"
+    xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="maersk/com/iib/common/state/mq/v2/SaveState.subflow" nsPrefix="maersk_com_iib_common_state_mq_v2_SaveState.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.URL" name="URL">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.ExipryTime" name="ExipryTime" defaultValueLiteral="10">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.destinationMode" name="destinationMode" lowerBound="1" eType="//@eClassifiers.1" defaultValueLiteral="fixed"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.persistenceMode" name="persistenceMode" lowerBound="1" eType="//@eClassifiers.2" defaultValueLiteral="automatic"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.transactionMode" name="transactionMode" lowerBound="1" eType="//@eClassifiers.3" defaultValueLiteral="automatic"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.queueName" name="queueName">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.ReplyToQueue" name="ReplyToQueue">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.ReplyToQueueManager" name="ReplyToQueueManager">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.Expiry_Time" name="Expiry_Time" defaultValueLiteral="600">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="SaveState" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libCommonComponents_v2/icons/full/obj16/SaveState.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libCommonComponents_v2/icons/full/obj30/SaveState.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="59,279">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="966,286">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="338,277">
+        <translation xmi:type="utility:ConstantString" string="MQ Flow Order"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="1710,56" mqmdAAAOptions="Modify header" mqmdCodedCharSetId="Inherit" mqmdFormat="Inherit" mqmdMsgType="Inherit" mqmdExpiry="Inherit" mqmdFeedback="Inherit" mqmdMsgId="Inherit" mqmdCorrelId="Inherit" mqmdReplyToQ="Inherit" mqmdReplyToQMgr="Inherit">
+        <translation xmi:type="utility:ConstantString" string="STATE.HEADER"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="701,119" newCorrelId="true">
+        <translation xmi:type="utility:ConstantString" string="STATE.QUEUE"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="998,123" computeExpression="esql://routine/maersk.com.iib.common.state.mq.v2#SaveState_Copy_MQMD.Main">
+        <translation xmi:type="utility:ConstantString" string="Copy MQMD"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="1731,233" mqmdAAAOptions="Modify header" mqmdCodedCharSetId="Inherit" mqmdFormat="Inherit" mqmdMsgType="Inherit" mqmdExpiry="Inherit" mqmdFeedback="Inherit" mqmdMsgId="$Environment/StateMQMD/CorrelId" mqmdCorrelId="$Root/MQMD/MsgId" mqmdReplyToQ="Inherit" mqmdReplyToQMgr="Inherit">
+        <translation xmi:type="utility:ConstantString" string="MQ.HEADER"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="677,516" definitionType="swagger_20" definitionFile="swagger.yaml" operationName="generate" timeoutForServer="10" acceptCompressedResponses="true">
+        <translation xmi:type="utility:ConstantString" string="generate"/>
+      </nodes>
+      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="715,693" messageText="Error generating / retrieving API key">
+        <translation xmi:type="utility:ConstantString" string="Generate/Get API key error"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFlowOrder.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="442,649">
+        <translation xmi:type="utility:ConstantString" string="Flow Order"/>
+      </nodes>
+      <nodes xmi:type="ComIbmPassthru.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="1307,516">
+        <translation xmi:type="utility:ConstantString" string="Pass through"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output1" location="664,854">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.DB%20Output" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_12" location="223,534" computeExpression="esql://routine/maersk.com.iib.common.state.v1#SaveState_SaveState_To_MQ_or_Use_URL.Main">
+        <translation xmi:type="utility:ConstantString" string="SaveState To MQ or Use URL"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_13" location="399,118" computeExpression="esql://routine/maersk.com.iib.common.state.mq.v2#SaveState_Transform_MQMD.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="Transform MQMD"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_14" location="838,515" computeExpression="esql://routine/maersk.com.iib.common.state.v1#SaveState_Setup_API_Call.Main">
+        <translation xmi:type="utility:ConstantString" string="Setup API Call"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_15" location="1096,516" definitionType="swagger_20" definitionFile="swagger.yaml" operationName="saveState" acceptCompressedResponses="true">
+        <translation xmi:type="utility:ConstantString" string="saveState"/>
+      </nodes>
+      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_16" location="1189,694" messageNumber="3002" messageText="Error inserting state">
+        <translation xmi:type="utility:ConstantString" string="Inserting State Error"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="697,285" computeExpression="esql://routine/maersk.com.iib.common.state.mq.v2#SaveState_SetHeader.Main">
+        <translation xmi:type="utility:ConstantString" string="SetHeader"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="586,657" computeExpression="esql://routine/maersk.com.iib.common.state.v1#SaveState_SetHeaderForRest.Main" computeMode="destinationAndMessage">
+        <translation xmi:type="utility:ConstantString" string="SetHeaderForRest"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input1" location="33,534">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.DBAPIInput" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.error" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.first" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_19" targetNode="FCMComposite_1_13" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.first" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_21" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_22" targetNode="FCMComposite_1_15" sourceNode="FCMComposite_1_14" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_23" targetNode="FCMComposite_1_16" sourceNode="FCMComposite_1_15" sourceTerminalName="OutTerminal.error" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_24" targetNode="FCMComposite_1_16" sourceNode="FCMComposite_1_15" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_25" targetNode="FCMComposite_1_11" sourceNode="FCMComposite_1_15" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_26" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_13" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.second" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_17" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.second" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_12" sourceNode="InTerminal.Input1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.WebService" configurable="true" userDefined="true" describedAttribute="Property.URL">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.URL" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+        <propertyDescriptor groupName="Group.WebService" configurable="true" userDefined="true" describedAttribute="Property.ExipryTime">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.ExipryTime" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+          <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.destinationMode">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.destinationMode" bundleName="ComIbmMQOutput" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+            <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.persistenceMode">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.persistenceMode" bundleName="ComIbmMQOutput" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+              <propertyDescriptor groupName="Group.Basic" describedAttribute="Property.transactionMode">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.transactionMode" bundleName="ComIbmMQOutput" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+                <propertyDescriptor groupName="Group.Basic" propertyEditor="com.ibm.etools.mft.ibmnodes.editors.mq.MQQueueNameEditor" configurable="true" describedAttribute="Property.queueName">
+                  <propertyName xmi:type="utility:TranslatableString" key="Property.queueName" bundleName="ComIbmMQOutput" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+                  <propertyDescriptor groupName="Group.Request" configurable="true" userDefined="true" describedAttribute="Property.ReplyToQueue">
+                    <propertyName xmi:type="utility:TranslatableString" key="Property.ReplyToQueue" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+                    <propertyDescriptor groupName="Group.Request" configurable="true" userDefined="true" describedAttribute="Property.ReplyToQueueManager">
+                      <propertyName xmi:type="utility:TranslatableString" key="Property.ReplyToQueueManager" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+                      <propertyDescriptor groupName="Group.Request" configurable="true" userDefined="true" describedAttribute="Property.Expiry_Time">
+                        <propertyName xmi:type="utility:TranslatableString" key="Property.Expiry_Time" bundleName="maersk/com/iib/common/state/mq/v2/SaveState" pluginId="libCommonComponents_v2"/>
+                      </propertyDescriptor>
+                    </propertyDescriptor>
+                  </propertyDescriptor>
+                </propertyDescriptor>
+              </propertyDescriptor>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <attributeLinks promotedAttribute="Property.destinationMode" overriddenNodes="FCMComposite_1_4">
+      <overriddenAttribute href="ComIbmMQOutput.msgnode#Property.destinationMode"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.persistenceMode" overriddenNodes="FCMComposite_1_4">
+      <overriddenAttribute href="ComIbmMQOutput.msgnode#Property.persistenceMode"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.transactionMode" overriddenNodes="FCMComposite_1_4">
+      <overriddenAttribute href="ComIbmMQOutput.msgnode#Property.transactionMode"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.queueName" overriddenNodes="FCMComposite_1_4">
+      <overriddenAttribute href="ComIbmMQOutput.msgnode#Property.queueName"/>
+    </attributeLinks>
+    <stickyBoard/>
+  </eClassifiers>
+  <eClassifiers xmi:type="ecore:EEnum">
+    <eLiterals xmi:id="destinationMode.list" name="list"/>
+    <eLiterals xmi:id="destinationMode.reply" name="reply" value="1"/>
+    <eLiterals xmi:id="destinationMode.fixed" name="fixed" value="2"/>
+  </eClassifiers>
+  <eClassifiers xmi:type="ecore:EEnum">
+    <eLiterals xmi:id="persistenceMode.automatic" name="automatic"/>
+    <eLiterals xmi:id="persistenceMode.yes" name="yes" value="1"/>
+    <eLiterals xmi:id="persistenceMode.no" name="no" value="2"/>
+    <eLiterals xmi:id="persistenceMode.asQdef" name="asQdef" value="3"/>
+  </eClassifiers>
+  <eClassifiers xmi:type="ecore:EEnum">
+    <eLiterals xmi:id="transactionMode.automatic" name="automatic"/>
+    <eLiterals xmi:id="transactionMode.yes" name="yes" value="1"/>
+    <eLiterals xmi:id="transactionMode.no" name="no" value="2"/>
+  </eClassifiers>
+</ecore:EPackage>

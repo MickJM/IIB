@@ -1,0 +1,59 @@
+PATH maersk.com.java.helper.*;
+
+BROKER SCHEMA maersk.com.iib.common.state.v1
+
+--DECLARE SaveState EXTERNAL BOOLEAN FALSE;
+DECLARE URL EXTERNAL CHARACTER '';
+DECLARE ExpiryTime EXTERNAL INTEGER 10;
+
+CREATE COMPUTE MODULE SaveState_SaveState_To_MQ_or_Use_URL
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE retCode INTEGER 0;
+		DECLARE retValue CHARACTER '';
+		
+		--SET retCode = getVariable('HOME', retValue);
+		
+		SET OutputRoot = InputRoot;
+		--IF (SaveState = FALSE) THEN
+		--	RETURN TRUE;
+		--END IF;
+				
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.origMsgId = refIn.MsgId;
+		SET Environment.variables.origCorrelId = refIn.CorrelId;
+		
+		SET Environment.variables.ReplyQmgr = refIn.ReplyToQMgr;
+		SET Environment.variables.ReplyToQueue = refIn.ReplyToQ;
+		
+		RETURN TRUE;
+		
+	END;
+END MODULE;
+
+
+
+
+CREATE COMPUTE MODULE SaveState_SaveState_To_MQ_or_Use_URL
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

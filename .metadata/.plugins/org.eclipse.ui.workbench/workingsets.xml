@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541856350117_3" label="[AggregationMQ]" name="[AggregationMQ]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/AggregationMQ" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541856350129_4" label="[AggregationMQBackend1]" name="[AggregationMQBackend1]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/AggregationMQBackend1" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541856350146_5" label="[AggregationMQBackend2]" name="[AggregationMQBackend2]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/AggregationMQBackend2" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541856625505_6" label="[libCommonComponents_v1]" name="[libCommonComponents_v1]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/libCommonComponents_v1" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541856826087_8" label="[PA_MQ_TO_MQ]" name="[PA_MQ_TO_MQ]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/PA_MQ_TO_MQ" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541857945017_9" label="[AggregationRESTAsync]" name="[AggregationRESTAsync]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/AggregationRESTAsync" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541857945036_10" label="[AggregationRESTBackend1]" name="[AggregationRESTBackend1]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/AggregationRESTBackend1" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541857945057_11" label="[AggregationRESTBackend2]" name="[AggregationRESTBackend2]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/AggregationRESTBackend2" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1543941614361_28" label="[ServiceA_Dist]" name="[ServiceA_Dist]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/ServiceA_Dist" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1550075344612_35" label="[libJavaHelpers]" name="[libJavaHelpers]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/libJavaHelpers" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/JavaHelpers" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1550224968112_37" label="[libCommonComponents_v2]" name="[libCommonComponents_v2]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/libCommonComponents_v2" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1550229750493_38" label="[PA_MQ_Request]" name="[PA_MQ_Request]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/PA_MQ_Request" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1550230141096_39" label="[PA_SampleRequestReplyService]" name="[PA_SampleRequestReplyService]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/PA_SampleRequestReplyService" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541855984291_0" label="Window Working Set" name="Aggregate for window 1541855984290"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541856161148_1" label="Window Working Set" name="Aggregate for window 1541856161148"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1541962121427_12" label="Window Working Set" name="Aggregate for window 1541962121426"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542633393428_13" label="Window Working Set" name="Aggregate for window 1542633393428"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542641881377_14" label="Window Working Set" name="Aggregate for window 1542641881377"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542713410899_15" label="Window Working Set" name="Aggregate for window 1542713410899"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542720345049_16" label="Window Working Set" name="Aggregate for window 1542720345049"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542743448163_17" label="Window Working Set" name="Aggregate for window 1542743448163"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542808809434_18" label="Window Working Set" name="Aggregate for window 1542808809434"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542879073515_19" label="Window Working Set" name="Aggregate for window 1542879073515"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542914183572_20" label="Window Working Set" name="Aggregate for window 1542914183572"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1542969709115_21" label="Window Working Set" name="Aggregate for window 1542969709115"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1543229891615_22" label="Window Working Set" name="Aggregate for window 1543229891615"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1543231582293_23" label="Window Working Set" name="Aggregate for window 1543231582293"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1543253381763_24" label="Window Working Set" name="Aggregate for window 1543253381763"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1543854499987_25" label="Window Working Set" name="Aggregate for window 1543854499987"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1544023309300_27" label="Window Working Set" name="Aggregate for window 1544023309300"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1544522123827_27" label="Window Working Set" name="Aggregate for window 1544522123827"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1544541990425_28" label="Window Working Set" name="Aggregate for window 1544541990425"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1547406587664_29" label="Window Working Set" name="Aggregate for window 1547406587663"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1547406874484_30" label="Window Working Set" name="Aggregate for window 1547406874484"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1547828762738_31" label="Window Working Set" name="Aggregate for window 1547828762736"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1548324049559_32" label="Window Working Set" name="Aggregate for window 1548324049559"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1549371112473_33" label="Window Working Set" name="Aggregate for window 1549371112473"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1550579992174_37" label="Window Working Set" name="Aggregate for window 1550579992174"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1551084038988_38" label="Window Working Set" name="Aggregate for window 1551084038988"/>
+</workingSetManager>

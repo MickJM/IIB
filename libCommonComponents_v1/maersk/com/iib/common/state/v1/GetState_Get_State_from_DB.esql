@@ -6,9 +6,6 @@ CREATE COMPUTE MODULE GetState_Get_State_from_DB
 	BEGIN
 
 		SET OutputRoot = InputRoot;
-		IF (SaveState = FALSE) THEN
-			RETURN TRUE;
-		END IF;
 				
 		CREATE LASTCHILD OF Environment.variables DOMAIN 'BLOB';
 		DECLARE refOrig REFERENCE TO Environment.variables.BLOB;
@@ -18,9 +15,7 @@ CREATE COMPUTE MODULE GetState_Get_State_from_DB
 		SET Environment.variables.MsgId = refIn.MsgId;
 		SET Environment.variables.CorrelId = refIn.CorrelId;
 		
-		PROPAGATE TO TERMINAL 'out1' DELETE NONE;
-		
-		RETURN FALSE;
+		RETURN TRUE;
 
 
 

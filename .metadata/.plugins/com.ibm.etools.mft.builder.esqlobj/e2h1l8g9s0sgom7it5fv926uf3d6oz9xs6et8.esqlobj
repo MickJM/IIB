@@ -1,0 +1,25 @@
+CREATE COMPUTE MODULE SaveState_SaveState_To_MQ_or_Use_URL
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE retCode INTEGER 0;
+		DECLARE retValue CHARACTER '';
+		
+		SET retCode = maersk.com.java.helper.getVariable("HOME", retValue);
+		
+		SET OutputRoot = InputRoot;
+		--IF (SaveState = FALSE) THEN
+		--	RETURN TRUE;
+		--END IF;
+				
+		DECLARE refIn REFERENCE TO InputRoot.MQMD;
+		SET Environment.variables.origMsgId = refIn.MsgId;
+		SET Environment.variables.origCorrelId = refIn.CorrelId;
+		
+		SET Environment.variables.ReplyQmgr = refIn.ReplyToQMgr;
+		SET Environment.variables.ReplyToQueue = refIn.ReplyToQ;
+		
+		RETURN TRUE;
+		
+	END;
+END MODULE;

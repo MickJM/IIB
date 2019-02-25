@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="maersk/iib/common/envelope/v1/sfAddEnvelope.subflow" nsPrefix="maersk_iib_common_envelope_v1_sfAddEnvelope.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.IncludeNameSpace" name="IncludeNameSpace" lowerBound="1">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="sfAddEnvelope" bundleName="maersk/iib/common/envelope/v1/sfAddEnvelope" pluginId="libMQFunctions_v1"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libMQFunctions_v1/icons/full/obj16/sfAddEnvelope.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/libMQFunctions_v1/icons/full/obj30/sfAddEnvelope.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="203,136">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Payload" bundleName="maersk/iib/common/envelope/v1/sfAddEnvelope" pluginId="libMQFunctions_v1"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="527,135">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="maersk/iib/common/envelope/v1/sfAddEnvelope" pluginId="libMQFunctions_v1"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input1" location="210,275">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Error" bundleName="maersk/iib/common/envelope/v1/sfAddEnvelope" pluginId="libMQFunctions_v1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="346,134" computeExpression="esql://routine/maersk.iib.common.envelope.v1#sfAddEnvelope_Add_Envelope.Main">
+        <translation xmi:type="utility:ConstantString" string="Add Envelope"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.IncludeNameSpace">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.IncludeNameSpace" bundleName="maersk/iib/common/envelope/v1/sfAddEnvelope" pluginId="libMQFunctions_v1"/>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>
